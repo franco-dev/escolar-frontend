@@ -1,31 +1,108 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <v-app>
+     <!--  <nav-bar></nav-bar> -->
+      <barra-nav v-if="this.$route.fullPath != '/login'"></barra-nav>
+      <!-- <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/login">Login</router-link>
+      </div> -->
+     <!--  <v-content>
+        <v-container fluid grid-list-lg>
+          
+        </v-container>
+      </v-content> -->
+      
+        <v-layout row justify-center>
+          <v-flex v-if="this.$route.fullPath != '/login'" xs11>
+            <v-card>
+              <router-view/>
+            </v-card>
+          </v-flex>
+          <v-flex v-else>
+            <v-app>
+              <router-view/>  
+            </v-app>
+          </v-flex>
+        </v-layout>
+        
+      <!-- <pie-pagina></pie-pagina> -->
+      
+    </v-app>
   </div>
 </template>
 
+<script>
+import NavBar from '@/components/NavBar';
+import BarraNav from '@/components/BarraNav'
+import PiePagina from '@/components/PiePagina';
+  export default {
+    components: {
+      NavBar,
+      PiePagina,
+      BarraNav
+    },
+    data() {
+      return {
+        nav: null,
+      }
+    },
+  }
+</script>
+
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
+  background-color: #263238;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
+@font-face {
+font-family: Luciano;
+src: url(./fonts/Luciano.ttf);
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.custom-loader {
+  animation: loader 1s infinite;
+  display: flex;
+}
+
+.titulo {
+  font-family: Luciano;
+  font-size: 250%;
+}
+
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>
