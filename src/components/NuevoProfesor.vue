@@ -1,6 +1,6 @@
 <template>
       <v-card>
-        <form @submit.prevent="submit" ref="form">
+        <form @submit.prevent="guardar(item, form)" ref="form">
           <v-toolbar dark color="primary">
             <v-btn icon @click.native="cerrar(item)" dark>
               <v-icon>close</v-icon>
@@ -8,7 +8,11 @@
             <v-toolbar-title>Nuevo Profesor</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-              <v-btn dark flat @click.native="guardar(item, form)">Save</v-btn>
+                <!--  <v-btn dark flat type="submit"
+                      :loading="formState.loading"
+                      @click.native="formState.loading = true"
+                      :disabled="!formIsValid || formState.loading">Login</v-btn> -->
+              <v-btn dark flat type="submit">Save</v-btn>
             </v-toolbar-items>
           </v-toolbar>
 
@@ -18,28 +22,10 @@
           <v-card-text>
             <v-container>
               <v-layout wrap>
-                <v-flex xs12 sm5 offset-sm6>
-                  <v-layout wrap>
+                <v-flex xs12 sm5 offset-sm1>
+                  <v-layout row wrap>
                     <v-flex xs12 sm12>
-                      <h2>Datos del nuevo Profesor:</h2>
-                    </v-flex>
-                    <v-flex xs12 sm12>
-                      <v-text-field v-model="form.nombres" label="Nombres" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6>
-                      <v-text-field v-model="form.appat" label="Apellido Paterno" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6>
-                      <v-text-field v-model="form.apmat" label="Apellidos Materno" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6>
-                      <v-text-field v-model="form.ci" label="Cédula de Identidad" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm6>
-                      <v-text-field v-model="form.cel" label="Telefono o Celular" required></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 sm12>
-                      <v-text-field v-model="form.dir" label="Dirección" required></v-text-field>
+                      <h2>Materias a dictar:</h2>
                     </v-flex>
                     <v-flex xs12 sm12>
                       <v-select
@@ -82,7 +68,58 @@
                     </v-flex>
                   </v-layout>
                 </v-flex>
-                
+                <v-flex xs12 sm5 offset-sm1>
+                  <v-layout wrap>
+                    <v-flex xs12 sm12>
+                      <h2>Datos del nuevo Profesor:</h2>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <!-- <v-text-field v-model="form.nombres" label="Nombres" :counter="10" :error-messages="namesErrors" @input="$v.names.$touch()" required></v-text-field> -->
+                      <v-text-field
+                        label="Name"
+                        v-model="form.nombres"
+                        required
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-text-field 
+                        v-model="form.appat"
+                        label="Apellido Paterno"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-text-field
+                        v-model="form.apmat"
+                        label="Apellidos Materno"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-text-field
+                        v-model.number="form.ci"
+                        label="Cédula de Identidad"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm6>
+                      <v-text-field
+                        v-model.number="form.cel"
+                        label="Telefono o Celular"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field
+                        v-model="form.dir"
+                        label="Dirección"
+                        required>
+                      </v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+                <pre>
+                </pre>
                 
               </v-layout>
             </v-container>
@@ -99,22 +136,27 @@
 <script>
 import { mapGetters } from 'vuex';
 export default {
+
     props: ["item", 'cerrar', "guardar"],
 
      computed: {
     ...mapGetters(['getMaterias']),
+    form_valid() {
+      return !!this.form.materias.length && !!this.form.nombres && !!this.form.appat && !!this.form.apmat && !!this.form.ci && !!this.form.dir && !!this.form.cel;
+    },
   },
   data() {
     return {
         form: {
             materias: [],
-            nombres: null,
+            nombres: '',
             appat: null,
             apmat: null,
             ci: null,
             dir: null,
             cel: null,
-        }
+        },
+        name: ''
     };
   }
 };

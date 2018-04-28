@@ -7,6 +7,8 @@ import VueDragDrop from 'vue-drag-drop';
 
 import resource from './util/api-resource';
 
+import VeeValidate from "vee-validate";
+
 Vue.use(VueDragDrop);
 
 import Vuetify from 'vuetify';
@@ -39,6 +41,8 @@ Vue.use(Vuetify, {
 
   }
 });
+
+Vue.use(VeeValidate);
 
 router.beforeEach((to, from, next) => {
   if(resource.auth.checkAuth() && to.path != '/login') {

@@ -61,8 +61,7 @@ const auth = {
     },
 
     logout() {
-        local.remove('user');
-        local.remove('token');
+        localStorage.clear();
         router.push('/login');
     },
 
