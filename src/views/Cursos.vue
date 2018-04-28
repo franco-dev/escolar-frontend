@@ -1,4 +1,5 @@
 <template>
+  <v-container fluid>
     <div id="create">
       <h1>Administrar Cursos</h1>
       <v-layout row wrap>
@@ -69,8 +70,8 @@
             </v-layout>
              
             <dialog-alert :dialog="dialog.dialog" :msg="dialog.msg" :title="dialog.title" :action="logout"></dialog-alert>
-    
     </div>
+  </v-container>
 </template>
 
 <script>

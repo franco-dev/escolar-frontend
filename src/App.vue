@@ -36,6 +36,8 @@
 import NavBar from '@/components/NavBar';
 import BarraNav from '@/components/BarraNav'
 import PiePagina from '@/components/PiePagina';
+import resource from "@/util/api-resource";
+import store from '@/store/store';
   export default {
     components: {
       NavBar,
@@ -47,6 +49,12 @@ import PiePagina from '@/components/PiePagina';
         nav: null,
       }
     },
+
+    mounted() {
+      if (resource.auth.checkAuth()) {
+        store.commit("setMaterias", resource.local.get('materias'));
+      }
+    }
   }
 </script>
 

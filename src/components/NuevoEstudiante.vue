@@ -53,7 +53,7 @@
                       label="Paralelo"
                       required
                       :items="paralelos"
-                      item-value="nombre"
+                      item-value="value"
                       v-model="form.cursoid"
                     ></v-select>
                   </v-flex>
