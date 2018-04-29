@@ -11,6 +11,8 @@ import VeeValidate from "vee-validate";
 
 Vue.use(VueDragDrop);
 
+Vue.use(VeeValidate);
+
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.css';
 
@@ -41,8 +43,6 @@ Vue.use(Vuetify, {
 
   }
 });
-
-Vue.use(VeeValidate);
 
 router.beforeEach((to, from, next) => {
   if(resource.auth.checkAuth() && to.path != '/login') {
