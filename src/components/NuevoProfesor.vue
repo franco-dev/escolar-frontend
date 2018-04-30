@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 export default {
     $_veeValidate: {
       validator: 'new'
@@ -164,6 +164,7 @@ export default {
 
      computed: {
     ...mapGetters(['getMaterias']),
+    ...mapState(['dictionary']),
     form_valid() {
       return !!this.form.materias.length && !!this.form.nombres && !!this.form.appat && !!this.form.apmat && !!this.form.ci && !!this.form.dir && !!this.form.cel;
     },
@@ -180,46 +181,6 @@ export default {
             cel: null,
         },
         name: '',
-        dictionary: {
-        attributes: {
-          email: 'E-mail Address'
-          // custom attributes
-        },
-        custom: {
-          nombres: {
-            required: () => 'El nombre no puede estar vacio.',
-            min: (field, params) => `El nombre debe contener al menos ${params} caracteres.`
-            // custom messages
-          },
-          appat: {
-            required: () => 'El apellido paterno no puede estar vacio.',
-            min: (field, params) => `El apellido paterno debe contener al menos ${params} caracteres.`
-            // custom messages
-          },
-          apmat: {
-            required: () => 'El apellido materno no puede estar vacio.',
-            min: (field, params) => `El apellido materno debe contener al menos ${params} caracteres.`
-            // custom messages
-          },
-          carnet: {
-            required: () => 'La cédula de identidad no puede estar vacio.',
-            min:(field, params) => `El cédula de identidad debe contener al menos ${params} dígitos númericos.`,
-            numeric: 'La cédula de identidad debe ser númerico.'
-            // custom messages
-          },
-          cel: {
-            required: () => 'El número telefonico no puede estar vacio.',
-            digits: (field, params) => `El número telefonico debe contener ${params} dígitos númericos.`,
-            // custom messages
-          },
-          materias: {
-             required: 'Las materias a dictar son requeridas.'
-          },
-          dir: {
-             required: 'La dirección es requerida.'
-          }
-        }
-      }
     };
   },
 

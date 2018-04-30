@@ -22,24 +22,67 @@
                   <v-flex xs12 sm12>
                     <h2>Datos del Estudiante:</h2>
                   </v-flex>
-                  <v-flex xs12 sm12>
-                    <v-text-field v-model="form.nombres" label="Nombres" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6>
-                    <v-text-field v-model="form.appat" label="Apellido Paterno" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6>
-                    <v-text-field v-model="form.apmat" label="Apellidos Materno" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6>
-                    <v-text-field v-model="form.ci" label="Cédula de Identidad" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm6>
-                    <v-text-field v-model="form.cel" label="Telefono o Celular" required></v-text-field>
-                  </v-flex>
-                  <v-flex xs12 sm12>
-                    <v-text-field v-model="form.dir" label="Dirección" required></v-text-field>
-                  </v-flex>
+                   <v-flex xs12 sm12>
+                      <!-- <v-text-field v-model="form.nombres" label="Nombres" :counter="10" :error-messages="namesErrors" @input="$v.names.$touch()" required></v-text-field> -->
+                      <v-text-field
+                        v-model="form.nombres"
+                        label="Nombres"
+                        :error-messages="errors.collect('nombres')"
+                        v-validate="'required|min:2'"
+                        data-vv-name="nombres"
+                        
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field 
+                        v-model="form.appat"
+                        label="Apellido Paterno"
+                        :error-messages="errors.collect('appat')"
+                        v-validate="'required|min:2'"
+                        data-vv-name="appat"
+                        >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field
+                        v-model="form.apmat"
+                        label="Apellidos Materno"
+                        :error-messages="errors.collect('apmat')"
+                        v-validate="'required|min:2'"
+                        data-vv-name="apmat"
+                        >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field
+                        v-model.number="form.ci"
+                        label="Cédula de Identidad"
+                        :error-messages="errors.collect('carnet')"
+                        v-validate="'required|min:6|numeric'"
+                        data-vv-name="carnet"
+                        >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field
+                        v-model.number="form.cel"
+                        label="Telefono o Celular"
+                        :error-messages="errors.collect('cel')"
+                        v-validate="'required|digits:8'"
+                        data-vv-name="cel"
+                        >
+                      </v-text-field>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                      <v-text-field
+                        v-model="form.dir"
+                        label="Dirección"
+                        :error-messages="errors.collect('dir')"
+                        v-validate="'required'"
+                        data-vv-name="dir"
+                        >
+                      </v-text-field>
+                    </v-flex>
                   <v-flex xs12 sm6>
                     <v-select
                       label="Curso"
@@ -92,12 +135,16 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 export default {
+   $_veeValidate: {
+      validator: 'new'
+    },
     props: ["item", 'cerrar', "guardar"],
     name: 'NuevoEstudiante',
     computed: {
     ...mapGetters(['cursosHabilitados', 'paralelosHabilitados']),
+    ...mapState(['dictionary']),
     paralelos() {
         let sw = false;
         let paralelos = [];
@@ -133,7 +180,10 @@ export default {
             apopar: null
         }
     };
-  }
+  },
+  mounted () {
+      this.$validator.localize('en', this.dictionary)
+    },
 };
 </script>
 
