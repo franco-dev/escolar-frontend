@@ -9,7 +9,42 @@ const getters = {
         for (let i = 0; i < state.length; i++) {
             for (let j = 0; j < state[i].paralelos.length; j++) {
                 if (state[i].paralelos[j].estado == 1 && habilitados.indexOf(state[i].curso) < 0) {
-                    habilitados.push(state[i].curso);
+                     let literal = "";
+                     switch (state[i].curso) {
+                       case 1:
+                         literal = "Primero";
+                         break;
+                       case 2:
+                         literal = "Segundo";
+                         break;
+                       case 3:
+                         literal = "Tercero";
+                         break;
+                       case 4:
+                         literal = "Cuarto";
+                         break;
+                       case 5:
+                         literal = "Quinto";
+                         break;
+                       case 6:
+                         literal = "Sexto";
+                         break;
+                       case 7:
+                         literal = "Septimo";
+                         break;
+                       case 8:
+                         literal = "Octavo";
+                         break;
+                       case 9:
+                         literal = "Noveno";
+                         break;
+                       default:
+                         break;
+                     }
+                    habilitados.push({
+                        text: literal,
+                        value:state[i].curso
+                    });
                 }
             }
         }

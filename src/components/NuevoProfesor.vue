@@ -8,17 +8,9 @@
             <v-toolbar-title>Nuevo Profesor</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-toolbar-items>
-                <!--  <v-btn dark flat type="submit"
-                      :loading="formState.loading"
-                      @click.native="formState.loading = true"
-                      :disabled="!formIsValid || formState.loading">Login</v-btn> -->
               <v-btn dark flat type="submit">Save</v-btn>
             </v-toolbar-items>
           </v-toolbar>
-
-        <!--  <v-card-title class="mb-0 pb-0">
-            <span class="headline">Inscribir Estudiante</span>
-          </v-card-title> -->
           <v-card-text>
             <v-container>
               <v-layout wrap>
@@ -77,7 +69,6 @@
                       <h2>Datos del nuevo Profesor:</h2>
                     </v-flex>
                     <v-flex xs12 sm12>
-                      <!-- <v-text-field v-model="form.nombres" label="Nombres" :counter="10" :error-messages="namesErrors" @input="$v.names.$touch()" required></v-text-field> -->
                       <v-text-field
                         v-model="form.nombres"
                         label="Nombres"
@@ -87,7 +78,7 @@
                         
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm12>
+                    <v-flex xs12 sm6>
                       <v-text-field 
                         v-model="form.appat"
                         label="Apellido Paterno"
@@ -97,7 +88,7 @@
                         >
                       </v-text-field>
                     </v-flex>
-                    <v-flex xs12 sm12>
+                    <v-flex xs12 sm6>
                       <v-text-field
                         v-model="form.apmat"
                         label="Apellidos Materno"
@@ -139,70 +130,79 @@
                     </v-flex>
                   </v-layout>
                 </v-flex>
-                <pre>
-                </pre>
-                
               </v-layout>
             </v-container>
           </v-card-text>
         </form>
-       <!--  <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="cerrar(item)">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="guardar(item)">Save</v-btn>
-        </v-card-actions> -->
       </v-card>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapState } from "vuex";
 export default {
-    $_veeValidate: {
-      validator: 'new'
-    },
-    props: ["item", 'cerrar', "guardar"],
-
-     computed: {
-    ...mapGetters(['getMaterias']),
-    ...mapState(['dictionary']),
-    form_valid() {
-      return !!this.form.materias.length && !!this.form.nombres && !!this.form.appat && !!this.form.apmat && !!this.form.ci && !!this.form.dir && !!this.form.cel;
-    },
+  $_veeValidate: {
+    validator: "new"
   },
+  props: ["item", "cerrar", "guardar", "dialog"],
+
+  computed: {
+    ...mapGetters(["getMaterias"]),
+    ...mapState(["dictionary"]),
+  },
+  watch: {
+    dialog: function(val, oldVal) {
+      if (oldVal) {
+        setTimeout(this.limpiar, 300);
+      }
+    }
+  },
+
   data() {
     return {
-        form: {
-            materias: null,
-            nombres: null,
-            appat: null,
-            apmat: null,
-            ci: null,
-            dir: null,
-            cel: null,
-        },
-        name: '',
+      form: {
+        materias: null,
+        nombres: null,
+        appat: null,
+        apmat: null,
+        ci: null,
+        dir: null,
+        cel: null
+      },
+      name: ""
     };
   },
 
   methods: {
     submit() {
-      this.$validator.validateAll().then((result) => {
+      this.$validator.validateAll().then(result => {
         if (result) {
           this.guardar(this.item, this.form);
         }
       });
+    },
+
+    limpiar() {
+      let keys = Object.keys(this.form);
+      let val = null;
+      for (const key in keys) {
+        if (keys[key] == "materias") {
+          val = [];
+        }
+        this.form[keys[key]] = val;
+      }
+      this.$validator.reset();
     }
   },
-   mounted () {
-      this.$validator.localize('en', this.dictionary)
-    },
+  mounted() {
+    this.$validator.localize("en", this.dictionary);
+  }
 };
 </script>
 
 <style>
-  .list__tile--active/*  > .list__tile__content > .list__tile__title  */{
-    font-weight: bold;
-    background-color: rgba(100, 0, 200, 0.2);
-    display: block
-  }
+.list__tile--active {
+  font-weight: bold;
+  background-color: rgba(100, 0, 200, 0.2);
+  display: block;
+}
 </style>

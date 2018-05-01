@@ -39,9 +39,9 @@ export default new Vuex.Store({
           // custom messages
         },
         cel: {
-          required: () => "El número telefonico no puede estar vacio.",
+          required: () => "El número telefónico no puede estar vacio.",
           digits: (field, params) =>
-            `El número telefonico debe contener ${params} dígitos númericos.`
+            `El número telefónico debe contener ${params} dígitos númericos.`
           // custom messages
         },
         materias: {
@@ -49,6 +49,30 @@ export default new Vuex.Store({
         },
         dir: {
           required: "La dirección es requerida."
+        },
+        apocel: {
+          required: () => "El número telefónico no puede estar vacio.",
+          digits: (field, params) =>
+            `El número telefónico debe contener ${params} dígitos númericos.`
+          // custom messages
+        },
+        aponombre: {
+          required: () => "El nombre no puede estar vacio.",
+          min: (field, params) =>
+            `El nombre debe contener al menos ${params} caracteres.`
+          // custom messages
+        },
+        apopar: {
+          required: () => "El parentesco no puede estar vacio.",
+          min: (field, params) =>
+            `El parentesco debe contener al menos ${params} caracteres.`
+          // custom messages
+        },
+        curso: {
+          required: "El curso al cual se inscribirá es requerido."
+        },
+        paralelo: {
+          required: "El paralélo al cual se inscribira es requerido."
         }
       }
     }

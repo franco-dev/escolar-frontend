@@ -16,13 +16,13 @@
               <v-list class="pt-0 pb-0">
                 <v-list-tile v-for="(item, i) in items" :key="i" @click.stop="item.dialog = true" >
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                  <v-dialog v-model="item.dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
+                  <v-dialog v-model="item.dialog" lazy fullscreen transition="dialog-bottom-transition" :overlay="false">
                 <!--   <v-dialog v-if="item.title == 'Nuevo Estudiante'" v-model="item.dialog" persistent max-width="50%"> -->
                     <!-- <v-btn flat block depressed dark slot="activator">Open Dialog</v-btn> -->
-                    <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
-                    <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
-                    <nueva-materia v-if="item.title == 'Nueva Materia'" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
-                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso>
+                    <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
+                    <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
+                    <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
+                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso>
                   </v-dialog>
                 </v-list-tile>
               </v-list>
@@ -113,6 +113,7 @@ export default {
     NuevoCurso,
     NuevoProfesor,
   },
+
   data() {
     return {
       active: null,
@@ -164,7 +165,6 @@ export default {
       this.$router.push(item.ruta);
     },
     cerrar(item) {
-      // console.log(dialog);
       item.dialog = false;
     },
 

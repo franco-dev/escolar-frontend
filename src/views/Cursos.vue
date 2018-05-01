@@ -69,38 +69,38 @@
                 </v-flex>
             </v-layout>
              
-            <dialog-alert :dialog="dialog.dialog" :msg="dialog.msg" :title="dialog.title" :action="logout"></dialog-alert>
+            
     </div>
   </v-container>
 </template>
 
 <script>
 import resource from "@/util/api-resource";
-import DialogAlert from "@/components/DialogAlert";
+
 import Estados from "@/components/Estados";
 import { mapActions, mapState } from "vuex";
+import { EventBus } from "@/util/EventBus";
 export default {
   name: "Cursos",
   components: {
-    DialogAlert,
     Estados
+  },
+
+  created() {
+    EventBus.$on("cargar-select", () => {
+      this.cargarSelect();
+    });
   },
 
   data() {
     return {
-      dialog: {
-        dialog: false,
-        msg: null,
-        title: null,
-        color: "primary"
-      },
       form: {
         habilitados: [],
-        desabilitados: [],
+        desabilitados: []
       },
-      estados:{
+      estados: {
         habilitados: 0,
-        inhabilitados: 0,
+        inhabilitados: 0
       },
       pagination: {
         rowsPerPage: 6
@@ -113,9 +113,9 @@ export default {
           align: "text-xs-left",
           value: "name"
         },
-        { text: "PARALELOS"}
+        { text: "PARALELOS" }
       ],
-      loading: false,
+      loading: false
     };
   },
 
@@ -123,10 +123,7 @@ export default {
 
   methods: {
     ...mapActions(["obtenerCursos", "guardarEstados"]),
-    logout() {
-      this.dialog.dialog = false;
-      resource.auth.logout();
-    },
+    
 
     vaciarSelect() {
       this.form.habilitados = [];
@@ -151,19 +148,21 @@ export default {
       this.loading = true;
       for (let i = 0; i < this.cursos.length; i++) {
         for (let j = 0; j < this.cursos[i].paralelos.length; j++) {
-          if (this.form.habilitados.indexOf(this.cursos[i].paralelos[j].id) < 0) {
+          if (
+            this.form.habilitados.indexOf(this.cursos[i].paralelos[j].id) < 0
+          ) {
             this.form.desabilitados.push(this.cursos[i].paralelos[j].id);
           }
         }
       }
 
-       this.guardarEstados(this.form)
+      this.guardarEstados(this.form)
         .then(response => {
           this.estados.habilitados = 0;
           this.estados.inhabilitados = 0;
           this.form.habilitados = [];
           this.form.desabilitados = [];
-          this.cargarSelect()
+          this.cargarSelect();
           this.loading = false;
           //console.log(response);
         })
@@ -187,61 +186,7 @@ export default {
   },
 
   mounted() {
-    if (!this.cursos[0]) {
-      this.obtenerCursos()
-        .then(response => {
-          if (!response.enter) {
-            this.dialog.msg = response.msg;
-            this.dialog.title = "Inctividad Prolongada";
-            this.dialog.dialog = true;
-          } else {
-            this.cargarSelect();
-          }
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    } else {
-      this.cargarSelect();
-    }
-  },
-
-  filters: {
-    literal(value) {
-      let literal = "";
-      switch (value) {
-        case 1:
-          literal = "Primero";
-          break;
-        case 2:
-          literal = "Segundo";
-          break;
-        case 3:
-          literal = "Tercero";
-          break;
-        case 4:
-          literal = "Cuarto";
-          break;
-        case 5:
-          literal = "Quinto";
-          break;
-        case 6:
-          literal = "Sexto";
-          break;
-        case 7:
-          literal = "Septimo";
-          break;
-        case 8:
-          literal = "Octavo";
-          break;
-        case 9:
-          literal = "Noveno";
-          break;
-        default:
-          break;
-      }
-      return literal;
-    }
+    this.cargarSelect();
   }
 };
 </script>
@@ -256,39 +201,39 @@ export default {
 }
 
 .custom-loader {
-    animation: loader 1s infinite;
-    display: flex;
+  animation: loader 1s infinite;
+  display: flex;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-moz-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @-webkit-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
   }
-  @-o-keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
   }
-  @keyframes loader {
-    from {
-      transform: rotate(0);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
   }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 </style>

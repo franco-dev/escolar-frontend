@@ -60,6 +60,42 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+Vue.filter('literal', function (value) {
+  let literal = "";
+  switch (value) {
+    case 1:
+      literal = "Primero";
+      break;
+    case 2:
+      literal = "Segundo";
+      break;
+    case 3:
+      literal = "Tercero";
+      break;
+    case 4:
+      literal = "Cuarto";
+      break;
+    case 5:
+      literal = "Quinto";
+      break;
+    case 6:
+      literal = "Sexto";
+      break;
+    case 7:
+      literal = "Septimo";
+      break;
+    case 8:
+      literal = "Octavo";
+      break;
+    case 9:
+      literal = "Noveno";
+      break;
+    default:
+      break;
+  }
+  return literal;
+});
+
 Vue.config.productionTip = false;
 
 new Vue({
