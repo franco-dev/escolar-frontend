@@ -41,14 +41,15 @@ const auth = {
                         enter: false
                     };
                     if (code == 200) {
-                        local.set('user', response.data.content);
-                        if (creds.remember) local.set('login-user', creds);
-                        else local.remove('login-user');
+                        local.set('user', response.data.content.data.admin);
+                        local.set('token', response.data.content.token);
+                        local.set('materias', response.data.content.data.materias);
+                        console.log('token de Login: '+response.data.content.token); 
+                        store.commit("setMaterias", response.data.content.data.materias);
+                       /*  if (creds.remember) local.set('login-user', creds);
+                        else local.remove('login-user'); */
                         router.push(redirect);
                         resp.enter = true;
-                        store.commit('setMaterias', response.data.content.data.materias);
-                        
-                        //console.log("Login: ", response);
                     }
                     resp.msg = response.data.usrmsg;
                     resolve(resp);
@@ -60,11 +61,11 @@ const auth = {
     },
 
     logout() {
-        local.remove('user');
+        localStorage.clear();
         router.push('/login');
     },
 
-    checkAuth: () => !!local.get('user').token,
+    checkAuth: () => !!local.get('token')
 };
 
 const cursos = {
@@ -75,21 +76,18 @@ const cursos = {
                     method: "get",
                     url: CURSOS_URL,
                     headers: {
-                        "Authorization": local.get('user').token
+                        "Authorization": local.get('token')
                     }
                 })
                 .then(response => {
-                    console.log("Token enviado: ", local.get('user').token);
+                   // console.log("Token enviado: ", local.get('token'));
                     let code = response.data.code;
                     if (code == 200) {
-                        let user = local.get('user');
-                        local.remove('user');
-                        user.token = response.data.content.token;
-                        //console.log(user);
-                        local.set('user', user);
+                        console.log(local.get('token'));
+                        local.set('token', response.data.content.token);
+                        console.log(response.data.content.token);
                         //console.log('Cambiooooo');
                     }
-                  //  console.log('Tokennn: '+local.get('user').token);
                     resolve(response.data);
                 })
                 .catch(e => {
@@ -100,28 +98,22 @@ const cursos = {
 
     guardarCursos(creds) {
         return new Promise((resolve, reject) => {
-            //console.log(local.get('user').token);
             axios({
                     method: "post",
                     url: CURSOS_URL,
                     data: creds,
                     headers: {
-                        "Authorization": local.get('user').token
+                        "Authorization": local.get('token')
                     }
                 })
                 .then(response => {
-                    //console.log(local.get('user').token);
                     let code = response.data.code;
                     if (code == 200) {
-                        let user = local.get('user');
-                        user.token = response.data.content.token;
-                        local.remove('user');
-                        local.set('user', user);
+                        local.set('token', response.data.content.token);
                     }
                     resolve(response.data);
                 })
                 .catch(e => {
-                    console.log("API-Resourse.js");
                     reject(e);
                 });
         });
@@ -137,7 +129,7 @@ const add = {
                     url: INSCRIBIR_URL,
                     data: creds,
                     headers: {
-                        "Authorization": local.get('user').token
+                        "Authorization": local.get('token')
                     }
                 })
                 .then(response => {
@@ -147,13 +139,10 @@ const add = {
                         username: null
                     };
                     let code = response.data.code;
-                    console.log(response);
                     if (code == 200) {
-                        let user = local.get('user');
-                        user.token = response.data.content.token;
-                        local.remove('user');
-                        local.set('user', user);
-                        resp.username = response.data.content.data;
+                        console.log(local.get("token"));
+                        local.set("token", response.data.content.token);
+                        console.log(response.data.content.token);
                     }
                     resp.msg = response.data.usrmsg;
                     resolve(resp);
@@ -173,7 +162,7 @@ const add = {
                     url: TEACHER_URL,
                     data: creds,
                     headers: {
-                        "Authorization": local.get('user').token
+                        "Authorization": local.get('token')
                     }
                 })
                 .then(response => {
@@ -185,17 +174,15 @@ const add = {
                     let code = response.data.code;
                     console.log(response);
                     if (code == 200) {
-                        let user = local.get('user');
-                        user.token = response.data.content.token;
-                        local.remove('user');
-                        local.set('user', user);
+                        console.log(local.get("token"));
+                        local.set("token", response.data.content.token);
+                        console.log(response.data.content.token);
                         resp.username = response.data.content.data;
                     }
                     resp.msg = response.data.usrmsg;
                     resolve(resp);
                 })
                 .catch(e => {
-                    console.log("API-Resourse.js");
                     reject(e);
                 });
         });
