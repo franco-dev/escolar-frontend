@@ -96,6 +96,7 @@
                 <!-- </v-card> -->
             </v-flex>
         </v-layout>
+        <dialog-alert :dialog="dialog.dialog" :msg="dialog.msg" :title="dialog.title" :action="logout"></dialog-alert>
         <!-- <alert-msg :msgalert="alert.visible" :text="alert.msg" :y="alert.y" :x="alert.x" :mode="alert.mode" :timeout="alert.timeout"></alert-msg> -->
     </div>
 </template>
@@ -106,25 +107,30 @@ import NuevoEstudiante from "@/components/NuevoEstudiante";
 import NuevaMateria from "@/components/NuevaMateria";
 import NuevoCurso from "@/components/NuevoCurso";
 import NuevoProfesor from "@/components/NuevoProfesor";
+import { EventBus } from "@/util/EventBus";
+import DialogAlert from "@/components/DialogAlert";
+import { mapActions, mapState } from "vuex";
+import store from "@/store/store";
 export default {
   components: {
     NuevoEstudiante,
     NuevaMateria,
     NuevoCurso,
     NuevoProfesor,
+    DialogAlert
   },
+
+  computed: mapState(["cursos"]),
 
   data() {
     return {
       active: null,
-      /* alert: {
-        visible: false,
+      dialog: {
+        dialog: false,
         msg: null,
-        y: "bottom",
-        x: "right",
-        mode: "multi-line",
-        timeout: 30000
-      }, */
+        title: null,
+        color: "primary"
+      }, 
       tab: null,
         itemss: [
           'web', 'shopping', 'videos', 'images', 'news'
@@ -168,6 +174,13 @@ export default {
       item.dialog = false;
     },
 
+    ...mapActions(["obtenerCursos"]),
+
+    logout() {
+      this.dialog.dialog = false;
+      resource.auth.logout();
+    },
+
     guardarProfesor(item, form) {
       resource.add
         .newTeacher(form)
@@ -203,6 +216,29 @@ export default {
           console.log(e);
         });
       item.dialog = false;
+    }
+  },
+
+   mounted() {
+    if (resource.auth.checkAuth()) {
+      store.commit("setMaterias", resource.local.get("materias"));
+      if (!this.cursos[0]) {
+        this.obtenerCursos()
+          .then(response => {
+            if (!response.enter) {
+              this.dialog.msg = response.msg;
+              this.dialog.title = "Inctividad Prolongada";
+              this.dialog.dialog = true;
+            } else {
+              EventBus.$emit('cargar-select');
+            }
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      } else {
+        EventBus.$emit('cargar-select');
+      }
     }
   }
 };

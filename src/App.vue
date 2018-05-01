@@ -16,7 +16,6 @@
         <v-layout row justify-center>
           <v-flex v-if="this.$route.fullPath != '/login'" xs11>
             <v-card>
-              <dialog-alert :dialog="dialog.dialog" :msg="dialog.msg" :title="dialog.title" :action="logout"></dialog-alert>
               <router-view/>
             </v-card>
           </v-flex>
@@ -38,61 +37,18 @@ import NavBar from "@/components/NavBar";
 import BarraNav from "@/components/BarraNav";
 import PiePagina from "@/components/PiePagina";
 import resource from "@/util/api-resource";
-import store from "@/store/store";
-import { EventBus } from "@/util/EventBus";
-import DialogAlert from "@/components/DialogAlert";
-import { mapActions, mapState } from "vuex";
 export default {
   components: {
     NavBar,
     PiePagina,
     BarraNav,
-    DialogAlert
   },
   data() {
     return {
       nav: null,
-      dialog: {
-        dialog: false,
-        msg: null,
-        title: null,
-        color: "primary"
-      }
     };
   },
-
-  methods: {
-    ...mapActions(["obtenerCursos"]),
-    logout() {
-      this.dialog.dialog = false;
-      resource.auth.logout();
-    },
-  },
-
-  computed: mapState(["cursos"]),
-
-  mounted() {
-    if (resource.auth.checkAuth()) {
-      store.commit("setMaterias", resource.local.get("materias"));
-      if (!this.cursos[0]) {
-        this.obtenerCursos()
-          .then(response => {
-            if (!response.enter) {
-              this.dialog.msg = response.msg;
-              this.dialog.title = "Inctividad Prolongada";
-              this.dialog.dialog = true;
-            } else {
-              EventBus.$emit('cargar-select');
-            }
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      } else {
-        EventBus.$emit('cargar-select');
-      }
-    }
-  }
+  
 };
 </script>
 
