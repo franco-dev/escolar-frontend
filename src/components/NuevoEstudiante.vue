@@ -152,6 +152,7 @@
 
 <script>
 import { mapGetters, mapState } from "vuex";
+import store from '@/store/store';
 export default {
   $_veeValidate: {
     validator: "new"
@@ -159,28 +160,10 @@ export default {
   props: ["item", "cerrar", "guardar", "dialog"],
   name: "NuevoEstudiante",
   computed: {
-    ...mapGetters(["cursosHabilitados", "paralelosHabilitados"]),
+    ...mapGetters(["cursosHabilitados"]),
     ...mapState(["dictionary"]),
     paralelos() {
-      let sw = false;
-      let paralelos = [];
-      for (let i = 0; i < this.paralelosHabilitados.length && !sw; i++) {
-        if (this.paralelosHabilitados[i].curso == this.form.curso) {
-          // paralelos = this.paralelosHabilitados[i].paralelos;
-          for (
-            let j = 0;
-            j < this.paralelosHabilitados[i].paralelos.length;
-            j++
-          ) {
-            paralelos.push({
-              text: this.paralelosHabilitados[i].paralelos[j].paralelo,
-              value: this.paralelosHabilitados[i].paralelos[j].id
-            });
-          }
-          sw = true;
-        }
-      }
-      return paralelos;
+      return store.getters.paralelosCurso(this.form.curso);
     },
   },
   data() {

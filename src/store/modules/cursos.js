@@ -65,6 +65,27 @@ const getters = {
         }
         return habilitados;
     },
+
+    paralelosCurso: state => value =>{
+        let sw = false;
+        let paralelos = [];
+        let habilitados = store.getters.paralelosHabilitados;
+        /* paralelos = store.getters.paralelosHabilitados; */
+        //console.log(value);
+        for (let i = 0; i < habilitados.length && !sw; i++) {
+          if (habilitados[i].curso == value) {
+            // paralelos = this.paralelosHabilitados[i].paralelos;
+            for (let j = 0; j < habilitados[i].paralelos.length; j++) {
+              paralelos.push({
+                text: habilitados[i].paralelos[j].paralelo,
+                value: habilitados[i].paralelos[j].id
+              });
+            }
+            sw = true;
+          }
+        }
+        return paralelos;
+    }
 };
 
 const mutations = {
