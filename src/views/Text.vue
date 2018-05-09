@@ -105,7 +105,7 @@
           </v-toolbar>
           <v-list class="scroll-box mt-5" dense>
             <v-divider></v-divider>
-            <template v-for="materia in sortMaterias">
+            <template v-for="(materia, index) in sortMaterias">
               <drag :transfer-data="materia" :key="index">
                 <template slot-scope="props">
                   <v-card :key="materia.id_materia" dark :color="'color'+ (materia.id_materia+1)">
@@ -117,9 +117,25 @@
                         <v-list-tile-title>{{ materia.literal }}</v-list-tile-title>
                       </v-list-tile-content>
                       <v-list-tile-action>
-                        <v-btn icon @click.native.stop="">
-                          <v-icon>alert</v-icon>
-                        </v-btn>
+                        <!-- <v-btn icon @click.native.stop="">
+                          <v-icon>{{ !!materia.profesor ? 'how_to_reg' : 'warning'}}</v-icon>
+                        </v-btn> -->
+                        <v-menu
+                          transition="slide-x-transition"
+                          bottom
+                          offset-x
+                          right
+                          :absolute="materia.profesor"
+                        >
+                          <v-btn icon slot="activator">
+                             <v-icon>{{ !!materia.profesor ? 'how_to_reg' : 'warning'}}</v-icon>
+                          </v-btn>
+                          <v-list class="pt-0 pb-0">
+                            <v-list-tile v-for="item in materia.profesores" :key="item.id" @click="materia.profesor = item.id" :class="materia.profesor == item.id ? 'item-active' : ''">
+                              <v-list-tile-title>{{ item.nombre }}</v-list-tile-title>
+                            </v-list-tile>
+                          </v-list>
+                        </v-menu>
                       </v-list-tile-action>
                     </v-list-tile>
                   </v-card>
@@ -504,4 +520,11 @@ export default {
   padding-right: 18px;
   left: 0px;
 }  
+
+.item-active {
+  font-weight: bold;
+  background-color: rgba(0, 0, 0, 0.767);
+  display: block;
+  color: aliceblue;
+}
 </style>
