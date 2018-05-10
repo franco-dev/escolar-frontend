@@ -2,7 +2,27 @@
     <div> 
         <v-toolbar color="blue-grey darken-4" dark class="elevation-0 pt-2 pb-2">
             <v-icon large>school</v-icon>
-            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text">Escolar</span></v-toolbar-title>
+            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
+            <!-- <v-btn class="ml-5" icon @click="show = !show">
+                <v-icon>search</v-icon>
+            </v-btn>
+            <transition
+                name="slide-fade"
+              > -->
+              <v-spacer></v-spacer>
+                 <v-flex class="mt-4" centered xs4>
+                    <v-text-field
+                        name="name"
+                        single-line
+                        color="pink"
+                        id="id"
+                        prepend-icon="search"
+                        autofocus
+                        placeholder=" Buscar según nombre o CI"
+                    ></v-text-field>
+                  </v-flex>
+            <!--   </transition> -->
+              
             <v-spacer></v-spacer>
             <v-menu
               origin="center center"
@@ -27,9 +47,6 @@
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn icon>
-                <v-icon>search</v-icon>
-            </v-btn>
             <v-menu left>
             <v-btn icon slot="activator" dark class="mr-4">
               <v-icon>more_vert</v-icon>
@@ -124,6 +141,7 @@ export default {
 
   data() {
     return {
+      show: false,
       active: null,
       dialog: {
         dialog: false,
@@ -216,6 +234,10 @@ export default {
           console.log(e);
         });
       item.dialog = false;
+    },
+
+    hola() {
+      this.show = false;
     }
   },
 
@@ -257,4 +279,14 @@ export default {
   font-family: Luciano;
   font-size: 250%;
 }
+/* .slide-fade-leave-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-enter, .slide-fade-leave-to{
+  transform: .8 translateX(-50px);
+  opacity: 0;
+} */
 </style>
