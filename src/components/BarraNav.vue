@@ -10,16 +10,68 @@
                 name="slide-fade"
               > -->
               <v-spacer></v-spacer>
-                 <v-flex class="mt-4" centered xs4>
-                    <v-text-field
+                 <v-flex class="mt-0" centered xs3>
+                    <!-- <v-text-field
                         name="name"
                         single-line
                         color="pink"
                         id="id"
+                        solo
+                        flat
                         prepend-icon="search"
                         autofocus
                         placeholder=" Buscar según nombre o CI"
-                    ></v-text-field>
+                    ></v-text-field> -->
+                     <!-- <v-select
+                      :items="states"
+                      :filter="customFilter"
+                      v-model="a1"
+                      color="pink"
+                      single-line
+                      solo
+                      max-height="100"
+                      prepend-icon="search"
+                      flat
+                      append-icon=""
+                      item-text="name"
+                      label="Buscar según nombre o CI"
+                      autocomplete
+                    ></v-select> -->
+                    <v-select
+                      :items="users"
+                      v-model="e11"
+                      :filter="customFilter"
+                      color="pink"
+                      cache-items
+                      no-data-text="No se encontró coincidencias"
+                      no-data-color="red"
+                      item-sub="username"
+                      single-line
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      dark
+                      flat
+                      max-height="100"
+                      prepend-icon="search"
+                      append-icon=""
+                      label="Buscar..."
+                      autocomplete
+                    >
+          <template slot="item" slot-scope="data">
+            <template>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="data.item.username"></v-list-tile-sub-title>                
+              </v-list-tile-content>
+            </template>
+          </template>
+          <template slot="no-data" >
+            <div class="ml-3">
+              Escriba nombre o ci
+            </div>
+          </template>
+        </v-select>
                   </v-flex>
             <!--   </transition> -->
               
@@ -128,6 +180,7 @@ import { EventBus } from "@/util/EventBus";
 import DialogAlert from "@/components/DialogAlert";
 import { mapActions, mapState } from "vuex";
 import store from "@/store/store";
+import axios from "axios";
 export default {
   components: {
     NuevoEstudiante,
@@ -141,6 +194,35 @@ export default {
 
   data() {
     return {
+      users: [],
+      e11: [],
+        people: [
+          { name: 'Sandra Adams', group: 'Group 1' },
+          { name: 'Ali Connors', group: 'Group 2' },
+          { name: 'Trevor Hansen', group: 'Group 3' },
+          { name: 'Tucker Smith', group: 'Group 4'},
+          { name: 'Britta Holt', group: 'Group 5' },
+          { name: 'Jane Smith ', group: 'Group 6' },
+          { name: 'John Smith', group: 'Group 7' },
+          { name: 'Sandra Williams', group: 'Group 8' }
+        ],
+      a1: null,
+        states: [
+          { name: 'Florida', abbr: 'FL', id: 1 },
+          { name: 'Georgia', abbr: 'GA', id: 2 },
+          { name: 'Nebraska', abbr: 'NE', id: 3 },
+          { name: 'California', abbr: 'CA', id: 4 },
+          { name: 'New York', abbr: 'NY', id: 5 }
+        ],
+        customFilter (item, queryText, itemText) {
+          const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
+          const text = hasValue(item.name)
+          const ci = hasValue(item.username)
+          const query = hasValue(queryText)
+          let nameReturn = text.toString().toLowerCase().indexOf(query.toString().toLowerCase());
+          let ciReturn = ci.toString().toLowerCase().indexOf(query.toString().toLowerCase());
+          return nameReturn > -1 || ciReturn > -1
+        },
       show: false,
       active: null,
       dialog: {
@@ -219,7 +301,6 @@ export default {
 
     guardarMateria() {
       console.log("Guardando materia");
-      
     },
 
     guardarEstudiante(item, form) {
@@ -261,6 +342,17 @@ export default {
       } else {
         EventBus.$emit('cargar-select');
       }
+
+      axios({
+        method: "get",
+        url: "https://jsonplaceholder.typicode.com/users",
+      })
+        .then(response => {
+          this.users = response.data;
+        })
+        .catch(e => {
+          console.log(e);
+        });
     }
   }
 };
@@ -278,6 +370,13 @@ export default {
 .titulo {
   font-family: Luciano;
   font-size: 250%;
+}
+.list__tile--disabled {
+  color: black;
+}
+
+.not-found {
+  background: 
 }
 /* .slide-fade-leave-active {
   transition: all .3s ease;
