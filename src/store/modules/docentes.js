@@ -1,38 +1,32 @@
 import resource from '@/util/api-resource';
 import store from '@/store/store';
 
-const students = [];
+const teachers = [];
 
 const getters = {
-    list_students(state) {
+    list_teacher(state) {
         let list = [];
-       state.forEach(student => {
-           list.push({
-               id: student.id,
-               name: student.appat + " " + student.apmat + " " + student.nombres,
-               ci: student.ci 
-           });
-       });
+        
         return list;
     },
 };
 
 const mutations = {
-    setStudents(state, newStudents) {
+    setTeachers(state, newTeachers) {
         state.splice(0, state.length);
-        newStudents.forEach(student => {
+        newTeachers.forEach(student => {
             state.push(student);
         });
     },
 };
 
 const actions = {
-    get_students({
+    get_teachers({
         commit,
         state
     }, form) {
         return new Promise((resolve, reject) => {
-            resource.estudiantes.get_students()
+            resource.docentes.get_teachers()
                 .then(response => {
                     let resp = {
                         msg: null,
@@ -40,14 +34,13 @@ const actions = {
                     };
 
                     if (response.code == 200) {
-                        commit('setStudents', response.content.data);
+                        commit('setTeachers', response.content.data);
                         resp.enter = true;
                     }
                     resp.msg = response.usrmsg;
                     resolve(resp);
                 })
                 .catch(e => {
-                    console.log(e);
                     reject(e);
                 });
         });
@@ -55,7 +48,7 @@ const actions = {
 };
 
 export default {
-    state: students,
+    state: teachers,
     mutations,
     actions,
     getters
