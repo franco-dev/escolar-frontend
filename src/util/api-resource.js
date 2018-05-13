@@ -9,6 +9,7 @@ const CURSOS_URL = API_URL + "admin/cursos";
 const INSCRIBIR_URL = API_URL + "admin/inscripcion";
 const TEACHER_URL = API_URL + "admin/profesor";
 const HORARIO_URL = API_URL + "admin/horario/curso/";
+const ESTUDIANTES_URL = API_URL + "admin/estudiantes";
 
 const local = {
   get(credencial) {
@@ -246,10 +247,40 @@ const horario = {
   }
 };
 
+const estudiantes = {
+  get_students() {
+    return new Promise((resolve, reject) => {
+      //console.log(local.get('user').token);
+      axios({
+          method: "get",
+          url: ESTUDIANTES_URL,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          // console.log("Token enviado: ", local.get('token'));
+          let code = response.data.code;
+          if (code == 200) {
+            // console.log(local.get("token"));
+            local.set("token", response.data.content.token);
+            //console.log(response.data.content.token);
+            //console.log('Cambiooooo');
+          }
+          resolve(response.data);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+};
+
 export default {
   auth,
   local,
   cursos,
   add,
-  horario
+  horario,
+  estudiantes
 };

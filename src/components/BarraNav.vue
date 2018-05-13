@@ -2,7 +2,79 @@
     <div> 
         <v-toolbar color="blue-grey darken-4" dark class="elevation-0 pt-2 pb-2">
             <v-icon large>school</v-icon>
-            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text">Escolar</span></v-toolbar-title>
+            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
+            <!-- <v-btn class="ml-5" icon @click="show = !show">
+                <v-icon>search</v-icon>
+            </v-btn>
+            <transition
+                name="slide-fade"
+              > -->
+              <v-spacer></v-spacer>
+                 <v-flex class="mt-0" centered xs3>
+                    <!-- <v-text-field
+                        name="name"
+                        single-line
+                        color="pink"
+                        id="id"
+                        solo
+                        flat
+                        prepend-icon="search"
+                        autofocus
+                        placeholder=" Buscar según nombre o CI"
+                    ></v-text-field> -->
+                     <!-- <v-select
+                      :items="states"
+                      :filter="customFilter"
+                      v-model="a1"
+                      color="pink"
+                      single-line
+                      solo
+                      max-height="100"
+                      prepend-icon="search"
+                      flat
+                      append-icon=""
+                      item-text="name"
+                      label="Buscar según nombre o CI"
+                      autocomplete
+                    ></v-select> -->
+                    <v-select
+                      :items="list_students"
+                      v-model="e11"
+                      :filter="customFilter"
+                      color="pink"
+                      cache-items
+                      no-data-text="No se encontró coincidencias"
+                      no-data-color="red"
+                      item-sub="username"
+                      single-line
+                      item-text="name"
+                      item-value="id"
+                      solo
+                      dark
+                      flat
+                      max-height="100"
+                      prepend-icon="search"
+                      append-icon=""
+                      label="Buscar..."
+                      autocomplete
+                    >
+          <template slot="item" slot-scope="data">
+            <template>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="data.item.username"></v-list-tile-sub-title>                
+              </v-list-tile-content>
+            </template>
+          </template>
+          <template slot="no-data" >
+            <div class="ml-3">
+              Escriba nombre o ci
+            </div>
+          </template>
+        </v-select>
+                  </v-flex>
+            <!--   </transition> -->
+              
             <v-spacer></v-spacer>
             <v-menu
               origin="center center"
@@ -27,9 +99,6 @@
                 </v-list-tile>
               </v-list>
             </v-menu>
-            <v-btn icon>
-                <v-icon>search</v-icon>
-            </v-btn>
             <v-menu left>
             <v-btn icon slot="activator" dark class="mr-4">
               <v-icon>more_vert</v-icon>
@@ -109,8 +178,9 @@ import NuevoCurso from "@/components/NuevoCurso";
 import NuevoProfesor from "@/components/NuevoProfesor";
 import { EventBus } from "@/util/EventBus";
 import DialogAlert from "@/components/DialogAlert";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import store from "@/store/store";
+import axios from "axios";
 export default {
   components: {
     NuevoEstudiante,
@@ -120,10 +190,24 @@ export default {
     DialogAlert
   },
 
-  computed: mapState(["cursos"]),
+  computed: {
+    ...mapState(["cursos"]),
+    ...mapGetters(["list_students"]),
+  },
 
   data() {
     return {
+      e11: [],
+        customFilter (item, queryText, itemText) {
+          const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
+          const text = hasValue(item.name)
+          const ci = hasValue(item.ci)
+          const query = hasValue(queryText)
+          let nameReturn = text.toString().toLowerCase().indexOf(query.toString().toLowerCase());
+          let ciReturn = ci.toString().toLowerCase().indexOf(query.toString().toLowerCase());
+          return nameReturn > -1 || ciReturn > -1
+        },
+      show: false,
       active: null,
       dialog: {
         dialog: false,
@@ -174,7 +258,7 @@ export default {
       item.dialog = false;
     },
 
-    ...mapActions(["obtenerCursos"]),
+    ...mapActions(["obtenerCursos", 'get_students']),
 
     logout() {
       this.dialog.dialog = false;
@@ -201,7 +285,6 @@ export default {
 
     guardarMateria() {
       console.log("Guardando materia");
-      
     },
 
     guardarEstudiante(item, form) {
@@ -216,7 +299,7 @@ export default {
           console.log(e);
         });
       item.dialog = false;
-    }
+    },
   },
 
    mounted() {
@@ -239,6 +322,14 @@ export default {
       } else {
         EventBus.$emit('cargar-select');
       }
+
+      this.get_students()
+          .then(response => {
+            console.log(response)
+          })
+          .catch(e => {
+            console.log(e);
+          });
     }
   }
 };
@@ -256,5 +347,12 @@ export default {
 .titulo {
   font-family: Luciano;
   font-size: 250%;
+}
+.list__tile--disabled {
+  color: black;
+}
+
+.not-found {
+  background: 
 }
 </style>

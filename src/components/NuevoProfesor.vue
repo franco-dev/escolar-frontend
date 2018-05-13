@@ -147,7 +147,7 @@ export default {
 
   computed: {
     ...mapGetters(["getMaterias"]),
-    ...mapState(["dictionary"]),
+    ...mapState(["list_students"]),
   },
   watch: {
     dialog: function(val, oldVal) {
