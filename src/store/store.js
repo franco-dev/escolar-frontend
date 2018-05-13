@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import cursos from './modules/cursos';
 import materias from './modules/materias';
+import students from './modules/estudiantes';
 
 Vue.use(Vuex);
 
@@ -81,6 +82,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     cursos,
-    materias
+    materias,
+    students
   }
 });

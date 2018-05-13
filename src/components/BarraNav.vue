@@ -38,7 +38,7 @@
                       autocomplete
                     ></v-select> -->
                     <v-select
-                      :items="users"
+                      :items="list_students"
                       v-model="e11"
                       :filter="customFilter"
                       color="pink"
@@ -178,7 +178,7 @@ import NuevoCurso from "@/components/NuevoCurso";
 import NuevoProfesor from "@/components/NuevoProfesor";
 import { EventBus } from "@/util/EventBus";
 import DialogAlert from "@/components/DialogAlert";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import store from "@/store/store";
 import axios from "axios";
 export default {
@@ -190,7 +190,10 @@ export default {
     DialogAlert
   },
 
-  computed: mapState(["cursos"]),
+  computed: {
+    ...mapState(["cursos"]),
+    ...mapGetters(["list_students"]),
+  },
 
   data() {
     return {
@@ -217,7 +220,7 @@ export default {
         customFilter (item, queryText, itemText) {
           const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
           const text = hasValue(item.name)
-          const ci = hasValue(item.username)
+          const ci = hasValue(item.ci)
           const query = hasValue(queryText)
           let nameReturn = text.toString().toLowerCase().indexOf(query.toString().toLowerCase());
           let ciReturn = ci.toString().toLowerCase().indexOf(query.toString().toLowerCase());
@@ -274,7 +277,7 @@ export default {
       item.dialog = false;
     },
 
-    ...mapActions(["obtenerCursos"]),
+    ...mapActions(["obtenerCursos", 'get_students']),
 
     logout() {
       this.dialog.dialog = false;
@@ -342,6 +345,14 @@ export default {
       } else {
         EventBus.$emit('cargar-select');
       }
+
+      this.get_students()
+          .then(response => {
+            console.log(response)
+          })
+          .catch(e => {
+            console.log(e);
+          });
 
       axios({
         method: "get",
