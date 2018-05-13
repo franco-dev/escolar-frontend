@@ -197,26 +197,7 @@ export default {
 
   data() {
     return {
-      users: [],
       e11: [],
-        people: [
-          { name: 'Sandra Adams', group: 'Group 1' },
-          { name: 'Ali Connors', group: 'Group 2' },
-          { name: 'Trevor Hansen', group: 'Group 3' },
-          { name: 'Tucker Smith', group: 'Group 4'},
-          { name: 'Britta Holt', group: 'Group 5' },
-          { name: 'Jane Smith ', group: 'Group 6' },
-          { name: 'John Smith', group: 'Group 7' },
-          { name: 'Sandra Williams', group: 'Group 8' }
-        ],
-      a1: null,
-        states: [
-          { name: 'Florida', abbr: 'FL', id: 1 },
-          { name: 'Georgia', abbr: 'GA', id: 2 },
-          { name: 'Nebraska', abbr: 'NE', id: 3 },
-          { name: 'California', abbr: 'CA', id: 4 },
-          { name: 'New York', abbr: 'NY', id: 5 }
-        ],
         customFilter (item, queryText, itemText) {
           const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
           const text = hasValue(item.name)
@@ -319,10 +300,6 @@ export default {
         });
       item.dialog = false;
     },
-
-    hola() {
-      this.show = false;
-    }
   },
 
    mounted() {
@@ -353,17 +330,6 @@ export default {
           .catch(e => {
             console.log(e);
           });
-
-      axios({
-        method: "get",
-        url: "https://jsonplaceholder.typicode.com/users",
-      })
-        .then(response => {
-          this.users = response.data;
-        })
-        .catch(e => {
-          console.log(e);
-        });
     }
   }
 };
@@ -389,14 +355,4 @@ export default {
 .not-found {
   background: 
 }
-/* .slide-fade-leave-active {
-  transition: all .3s ease;
-}
-.slide-fade-enter-active {
-  transition: all .3s ease;
-}
-.slide-fade-enter, .slide-fade-leave-to{
-  transform: .8 translateX(-50px);
-  opacity: 0;
-} */
 </style>
