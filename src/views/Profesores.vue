@@ -61,32 +61,43 @@
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
                 <td class="text-xs-left">{{ props.item.nombres }}</td>
                 <td class="text-xs-left">{{ props.item.dir }}</td>
-                <td class="justify-center layout px-0">
-                    <v-btn icon class="mx-0" @click="editItem(props.item)">
+                <td class="text-xs-left layout px-0">
+                  <v-tooltip top>
+                    <v-btn icon class="mx-0" slot="activator" @click.stop="props.expanded = !props.expanded">
+                        <v-icon color="indigo">visibility</v-icon>
+                    </v-btn>
+                    <span>Ver Materias</span>
+                  </v-tooltip>
+                  <v-tooltip top>
+                    <v-btn icon class="mx-0" slot="activator" @click="editItem(props.item)">
                         <v-icon color="teal">edit</v-icon>
                     </v-btn>
-                    <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+                    <span>Actualizar Datos</span>
+                  </v-tooltip>
+                  <v-tooltip top>
+                    <v-btn icon class="mx-0" slot="activator" @click="deleteItem(props.item)">
                         <v-icon color="pink">delete</v-icon>
                     </v-btn>
+                    <span>Dar de Baja</span>
+                  </v-tooltip>
                 </td>
             </tr>
         </template>
         <template slot="expand" slot-scope="props">
-            <!-- <v-card flat> -->
-                <v-chip v-for="(materia, index) in props.item.materias" :key="index" color="indigo" text-color="white">
-                    <v-avatar>
-                        <v-icon>account_circle</v-icon>
-                    </v-avatar>
-                    {{ materia.nombre }}
-                </v-chip>
-           <!--  </v-card> -->
+          <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
+            <v-avatar>
+              <!-- <v-icon>account_circle</v-icon> -->
+              <i :class="icons[materia.id]"></i>
+            </v-avatar>
+            {{ materia.nombre }}
+          </v-chip>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
             No se encontró ningún resultado de la búsqueda de "{{ search }}".
       </v-alert>
     </v-data-table>
      </v-card>
-       <!--  <pre>
+        <!-- <pre>
             {{ teachers }}
         </pre>  -->
     </v-container>
@@ -99,7 +110,7 @@ export default {
   data() {
     return {
       dialog: false,
-      search: '',
+      search: "",
       headers: [
         {
           text: "Identidad",
@@ -126,7 +137,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["teachers"]),
+    ...mapState(["teachers", 'icons'])
   },
 
   methods: {

@@ -9,6 +9,22 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    icons: {
+      6: "fas fa-calculator",
+      2: "fas fa-pencil-alt",
+      4: "fas fa-leaf",
+      14: "fas fa-flask",
+      9: "fas fa-trophy",
+      3: "fas fa-globe",
+      10: "fas fa-music",
+      5: "fas fa-paint-brush",
+      8: "fas fa-language",
+      7: "fas fa-lightbulb",
+      11: "fas fa-diagnoses",
+      1: "fas fa-hands",
+      13: "fas fa-flask",
+      12: "fas fa-book"
+    },
     dictionary: {
       attributes: {
         email: "E-mail Address"
