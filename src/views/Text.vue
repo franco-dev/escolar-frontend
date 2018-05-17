@@ -125,7 +125,6 @@
                           bottom
                           offset-x
                           right
-                          :absolute="materia.profesor"
                         >
                           <v-btn icon slot="activator">
                              <v-icon>{{ !!materia.profesor ? 'how_to_reg' : 'warning'}}</v-icon>
@@ -187,14 +186,21 @@
                     <drop @drop="handleDrop(item, ...arguments)" :key="item.id">
                       <template slot-scope="props">
                         <v-card dark :color="props.transferData ? 'color'+(props.transferData.id_materia+1) : (item.id_materia == null ? 'white' : 'color'+ (item.id_materia+1))">
-                          <v-list-tile avatar :id="item.id_materia" @click="">
-                            <drag v-if="item.literal != null" :transfer-data="item" style="height: 100%; width: 100%">
+                          <drag v-if="item.literal != null" :transfer-data="item">
+                            <v-list-tile avatar :id="item.id_materia" @click="">
                               <v-list-tile-content>
-                                  <v-list-tile-title>{{ props.transferData ? props.transferData.literal : item.literal }}</v-list-tile-title>
+                                <v-list-tile-title>{{ props.transferData ? props.transferData.literal : item.literal }}</v-list-tile-title>
                               </v-list-tile-content>
-                            </drag>
-                            <v-list-tile-content v-else>
-                              <v-list-tile-title>{{ props.transferData ? props.transferData.literal : item.literal }}</v-list-tile-title>
+                              <v-list-tile-action>
+                                <v-btn icon color="white" flat @click="removeMateria(dia.dia, item.id)">
+                                  <v-icon>close</v-icon>
+                                </v-btn>
+                              </v-list-tile-action>
+                            </v-list-tile>
+                          </drag>
+                          <v-list-tile v-else avatar>
+                            <v-list-tile-content >
+                                <v-list-tile-title>{{ props.transferData ? props.transferData.literal : item.literal }}</v-list-tile-title>
                             </v-list-tile-content>
                           </v-list-tile>
                         </v-card>
@@ -386,6 +392,12 @@ export default {
     };
   },
   methods: {
+    removeMateria(dia, index) {
+      let perio = this.horario.find(day => day.dia === dia).periodos.find(periodo => periodo.id === index);
+      perio.literal = null;
+      perio.id_materia = null;
+      console.log(perio.literal);
+    },
     handleDrop(to, from) {
       if (!!from) {
         let mat_id = to.id_materia;
@@ -431,7 +443,7 @@ export default {
           this.msg.text = response.msg;
           this.msg.visible = true;
           this.loading2 = false;
-          // console.log(this.cursoid)
+          console.log(creds);
         })
         .catch(e => {
           console.log(e);
