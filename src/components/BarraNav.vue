@@ -1,6 +1,6 @@
 <template>
     <div> 
-        <v-toolbar color="blue-grey darken-4" dark class="elevation-0 pt-2 pb-2">
+        <v-toolbar color="primary" dark flat extended class="elevation-0">
             <v-icon large>school</v-icon>
             <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
             <!-- <v-btn class="ml-5" icon @click="show = !show">
@@ -10,7 +10,7 @@
                 name="slide-fade"
               > -->
               <v-spacer></v-spacer>
-                 <v-flex class="mt-0" centered xs3>
+                 <v-flex centered xs3>
                     <!-- <v-text-field
                         name="name"
                         single-line
@@ -141,7 +141,10 @@
                         </v-tooltip>
                     
                     </v-bottom-nav> -->
+                    <div class="card--flex-toolbar">
+                     <!--  <v-toolbar card prominent> -->
                             <v-tabs
+                                class="pt-2"
                                 v-model="active"
                                 color="grey darken-3"
                                 height="60"
@@ -151,7 +154,7 @@
                                 icons-and-text
                             >
                                 <v-tab
-                                v-for="(tab, index) in tabsData"
+                                v-for="(tab) in tabsData"
                                 :key="tab.title"
                                 target
                                 :to="tab.ruta"
@@ -161,6 +164,8 @@
                                     <v-icon v-else :color="tab.color"> {{ tab.icon }} </v-icon>
                                 </v-tab>
                         </v-tabs>
+                    <!--   </v-toolbar> -->
+                    </div>
                     
                 <!-- </v-card> -->
             </v-flex>
@@ -352,7 +357,7 @@ export default {
   color: black;
 }
 
-.not-found {
-  background: 
-}
+.card--flex-toolbar {
+    margin-top: -65px;
+  }
 </style>

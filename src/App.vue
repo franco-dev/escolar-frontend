@@ -57,7 +57,7 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #263238;
+  background-color: #e0e0e0;
 }
 
 @font-face {

@@ -48,43 +48,6 @@
     </v-layout>
     </v-container>
     <v-layout v-if="!loading && !!materias.length"  row>
-      <!-- <v-flex xs3 class="scroll-box"> -->
-        <!-- <v-layout v-if="!loading" row wrap class="pr-3">
-          <v-flex xs12 v-for="(list, index) in lists" :key="index">
-            <v-list two-line>
-              <template v-for="(materia, index) in list">
-                <drag :transfer-data="materia" :key="index">
-                  <template slot-scope="props">
-                    <v-card dark :color="'color'+ (materia.id_materia+1)">
-                      <v-list-tile avatar :key="materia.id" @click="">
-                        <v-list-tile-avatar>
-                          <i :class="icons[materia.id_materia]"></i>
-                        </v-list-tile-avatar>
-                        <v-list-tile-content>
-                          <v-list-tile-title>
-                            {{ props.transferData ? 'Coloque la materia en el periodo que usted vea conveniente' : materia.literal }}
-                          </v-list-tile-title>
-                        </v-list-tile-content>
-                        <v-flex xs6>
-                          <v-select
-                            :items="materia.profesores"
-                            v-model="materia.profesor"
-                            label="Designar Profesor"
-                            item-text="nombre"
-                            item-value="id"
-                            single-line
-                            auto
-                            append-icon="account_circle"
-                          ></v-select>
-                        </v-flex>
-                      </v-list-tile>
-                    </v-card>
-                  </template>
-                </drag>
-              </template>
-            </v-list>
-          </v-flex>
-        </v-layout> -->
         <v-navigation-drawer width="220" height="450px" class="mr-3 list-materias" :mini-variant.sync="mini" v-model="drawer" stateless hide-overlay>
           <v-toolbar fixed flat class="">
             <v-list class="pa-0">
@@ -143,8 +106,6 @@
             </template>
           </v-list>
         </v-navigation-drawer>
-      <!-- </v-flex>
-      <v-flex xs9> -->
         <v-layout row wrap>
           <v-flex xs1>
             <v-layout row wrap>
@@ -213,7 +174,6 @@
             </v-layout>
           </v-flex>
         </v-layout>
-      <!-- </v-flex> -->
     </v-layout>
     <v-snackbar
       :timeout="msg.timeout"
@@ -257,137 +217,8 @@ export default {
       cursoid: null,
       loading: false,
       loading2: false,
-      /* materias: [
-        {
-          id: 1,
-          name: "Religión",
-          color: "colorRel",
-          icon: "fas fa-calculator"
-        },
-        {
-          id: 2,
-          name: "Lenguaje",
-          color: "colorLen",
-          icon: "fas fa-book"
-        },
-        {
-          id: 3,
-          name: "Sociales",
-          color: "colorSoc",
-          icon: "fab fa-react"
-        },
-        { id: 4, name: "Biología", color: "colorBio", icon: "fas fa-flask" },
-        {
-          id: 5,
-          name: "Artes Plásticas",
-          color: "colorArt",
-          icon: "fas fa-leaf"
-        },
-        {
-          id: 6,
-          name: "Matemáticas",
-          color: "colorMat",
-          icon: "fas fa-trophy"
-        },
-        {
-          id: 7,
-          name: "Técnica Vocacional",
-          color: "colorTec",
-          icon: "fas fa-globe"
-        },
-        { id: 8, name: "Ingles", color: "colorIng", icon: "fas fa-globe" },
-        {
-          id: 9,
-          name: "Educación Fisica",
-          color: "colorEdu",
-          icon: "fas fa-globe"
-        },
-        { id: 10, name: "Música", color: "colorMus", icon: "fas fa-globe" },
-        { id: 11, name: "Filosofía", color: "colorFil", icon: "fas fa-globe" },
-        { id: 12, name: "Literatura", color: "colorLit", icon: "fas fa-globe" },
-        {
-          id: 13,
-          name: "Física-Química",
-          color: "colorQui",
-          icon: "fas fa-globe"
-        },
-        { id: 14, name: "Física", color: "colorFis", icon: "fas fa-globe" }
-      ], */
       materias: [],
-      horario: [
-        /*  {
-          dia: "lunes",
-          materias: [
-            { idPer: 0, id: "", name: "" },
-            { idPer: 1, id: "", name: "" },
-            { idPer: 2, id: "", name: "" },
-            { idPer: 3, id: "", name: "" },
-            { idPer: 4, id: "", name: "" },
-            { idPer: 5, id: "", name: "" },
-            { idPer: 6, id: "", name: "" }
-          ]
-        },
-        {
-          dia: "martes",
-          materias: [
-            { idPer: 7, id: "", name: "" },
-            { idPer: 8, id: "", name: "" },
-            { idPer: 9, id: "", name: "" },
-            { idPer: 10, id: "", name: "" },
-            { idPer: 11, id: "", name: "" },
-            { idPer: 12, id: "", name: "" },
-            { idPer: 13, id: "", name: "" }
-          ]
-        },
-        {
-          dia: "miercoles",
-          materias: [
-            { idPer: 14, id: "", name: "" },
-            { idPer: 15, id: "", name: "" },
-            { idPer: 16, id: "", name: "" },
-            { idPer: 17, id: "", name: "" },
-            { idPer: 18, id: "", name: "" },
-            { idPer: 19, id: "", name: "" },
-            { idPer: 20, id: "", name: "" }
-          ]
-        },
-        {
-          dia: "jueves",
-          materias: [
-            { idPer: 21, id: "", name: "" },
-            { idPer: 22, id: "", name: "" },
-            { idPer: 23, id: "", name: "" },
-            { idPer: 24, id: "", name: "" },
-            { idPer: 25, id: "", name: "" },
-            { idPer: 26, id: "", name: "" },
-            { idPer: 27, id: "", name: "" }
-          ]
-        },
-        {
-          dia: "viernes",
-          materias: [
-            { idPer: 28, id: "", name: "" },
-            { idPer: 29, id: "", name: "" },
-            { idPer: 30, id: "", name: "" },
-            { idPer: 31, id: "", name: "" },
-            { idPer: 32, id: "", name: "" },
-            { idPer: 33, id: "", name: "" },
-            { idPer: 34, id: "", name: "" }
-          ]
-        },
-        {
-          dia: "Sabado",
-          materias: [
-            { idPer: 35, id: "", name: "" },
-            { idPer: 36, id: "", name: "" },
-            { idPer: 37, id: "", name: "" },
-            { idPer: 38, id: "", name: "" },
-            { idPer: 39, id: "", name: "" },
-            { idPer: 40, id: "", name: "" },
-            { idPer: 41, id: "", name: "" }
-          ]
-        } */
-      ],
+      horario: [],
       hora: ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"]
     };
   },
@@ -435,8 +266,6 @@ export default {
         }
       }
 
-      //console.log(creds)
-
       resource.horario
         .saveHorario(creds, this.cursoid)
         .then(response => {
@@ -472,6 +301,7 @@ export default {
       this.cursoid = null;
     },
   },
+
   computed: {
     ...mapGetters(["getMaterias", "cursosHabilitados"]),
     ...mapState(['icons']),
@@ -484,18 +314,6 @@ export default {
     lists() {
       let list = [];
       list.push(this.sortMaterias.slice(0, this.materias.length));
-      /* list.push(
-        this.sortMaterias.slice(
-          this.materias.length / 2 + 1,
-          this.materias.length
-        )
-      ); */
-      /* list.push(
-        this.sortMaterias.slice(
-          this.materias.length / 3 * 2 + 1,
-          this.materias.length
-        )
-      ); */
       return list;
     }
   }

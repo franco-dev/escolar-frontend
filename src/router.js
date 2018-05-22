@@ -8,7 +8,7 @@ import Estudiantes from './views/Estudiantes';
 import Profesores from './views/Profesores.vue';
 import NotFound from './views/NotFound.vue';
 
-import Test from './views/Text.vue';
+import Horario from './views/Horario.vue';
 
 Vue.use(Router);
 
@@ -32,7 +32,7 @@ export default new Router({
         {path: 'cursos', component: Cursos, name: 'cursos'},
         {path: 'profesores', component: Profesores, name: 'profesores'},
         {path: 'estudiantes', component: Estudiantes, name: 'estudiantes'},
-        {path: 'horarios', component: Test, name: 'horarios'},
+        {path: 'horarios', component: Horario, name: 'horarios'},
       ]
     },
     {
