@@ -1,42 +1,10 @@
 <template>
     <div> 
-        <v-toolbar color="primary" dark flat extended class="elevation-0">
+        <v-toolbar color="primary" dark flat extended class="elevation-0 mb-3">
             <v-icon large>school</v-icon>
             <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
-            <!-- <v-btn class="ml-5" icon @click="show = !show">
-                <v-icon>search</v-icon>
-            </v-btn>
-            <transition
-                name="slide-fade"
-              > -->
               <v-spacer></v-spacer>
                  <v-flex centered xs3>
-                    <!-- <v-text-field
-                        name="name"
-                        single-line
-                        color="pink"
-                        id="id"
-                        solo
-                        flat
-                        prepend-icon="search"
-                        autofocus
-                        placeholder=" Buscar según nombre o CI"
-                    ></v-text-field> -->
-                     <!-- <v-select
-                      :items="states"
-                      :filter="customFilter"
-                      v-model="a1"
-                      color="pink"
-                      single-line
-                      solo
-                      max-height="100"
-                      prepend-icon="search"
-                      flat
-                      append-icon=""
-                      item-text="name"
-                      label="Buscar según nombre o CI"
-                      autocomplete
-                    ></v-select> -->
                     <v-select
                       :items="list_students"
                       v-model="e11"
@@ -73,8 +41,6 @@
           </template>
         </v-select>
                   </v-flex>
-            <!--   </transition> -->
-              
             <v-spacer></v-spacer>
             <v-menu
               origin="center center"
@@ -89,8 +55,6 @@
                 <v-list-tile v-for="(item, i) in items" :key="i" @click.stop="item.dialog = true" >
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                   <v-dialog v-model="item.dialog" lazy fullscreen transition="dialog-bottom-transition" :overlay="false">
-                <!--   <v-dialog v-if="item.title == 'Nuevo Estudiante'" v-model="item.dialog" persistent max-width="50%"> -->
-                    <!-- <v-btn flat block depressed dark slot="activator">Open Dialog</v-btn> -->
                     <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
                     <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
                     <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
@@ -115,36 +79,13 @@
           <v-alert type="success" outline dismissible v-model="alert.visible">
             {{ alert.msg }}
           </v-alert>
-
-         <!--  <div class="text-xs-center">
-            <v-btn color="primary" dark v-if="!alert" @click="alert = true">Reset</v-btn>
-          </div> -->
         </div>
         
         <v-layout row justify-center>
             <v-flex xs11>
-                <!-- <v-tabs icons-and-text right dark fixed>
-                    <v-tabs-slider v-for="i in 3" :key="i" color="red"></v-tabs-slider>
-                    <v-tab v-for="(tab, index) in tabs" :key="index" :to="tab.ruta">
-                        {{ tab.title }}
-                        <v-icon>{{ tab.icon }}</v-icon>
-                    </v-tab>
-                </v-tabs> -->
-                <!-- <v-card> -->
-                <!--  <v-bottom-nav shift class="elevation-0" absolute :value="e31" color="grey darken-3">
-                        <v-tooltip v-for="(tab, index) in tabs" flat :key="index"  :color="tab.color" bottom>
-                            <v-btn :to="tab.ruta" color="primary" slot="activator">
-                                <span>{{ tab.title }}</span>
-                                <v-icon> {{ tab.icon }} </v-icon>
-                            </v-btn>
-                            <span>{{ tab.title }}</span>
-                        </v-tooltip>
-                    
-                    </v-bottom-nav> -->
                     <div class="card--flex-toolbar">
-                     <!--  <v-toolbar card prominent> -->
                             <v-tabs
-                                class="pt-2"
+                                
                                 v-model="active"
                                 color="grey darken-3"
                                 height="60"
@@ -164,10 +105,7 @@
                                     <v-icon v-else :color="tab.color"> {{ tab.icon }} </v-icon>
                                 </v-tab>
                         </v-tabs>
-                    <!--   </v-toolbar> -->
                     </div>
-                    
-                <!-- </v-card> -->
             </v-flex>
         </v-layout>
         <dialog-alert :dialog="dialog.dialog" :msg="dialog.msg" :title="dialog.title" :action="logout"></dialog-alert>
@@ -358,6 +296,6 @@ export default {
 }
 
 .card--flex-toolbar {
-    margin-top: -65px;
+    margin-top: -60px;
   }
 </style>

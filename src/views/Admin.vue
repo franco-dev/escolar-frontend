@@ -1,7 +1,9 @@
 <template>
     <div>
         <sub-nav :items="nav"></sub-nav>
-        <router-view></router-view>
+        <v-jumbotron height="100%" class="admin-content" color="white">
+          <router-view></router-view>
+        </v-jumbotron>
     </div>
 </template>
 
@@ -25,5 +27,7 @@ export default {
 </script>
 
 <style scoped>
-
+.admin-content {
+  min-height: 400px;
+}
 </style>

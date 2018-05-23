@@ -55,7 +55,7 @@
         class="elevation-1"
     >
         <template slot="items" slot-scope="props">
-            <tr @click="props.expanded = !props.expanded">
+            <tr @click.stop="props.expanded = false">
                 <td class="text-xs-right">{{ props.item.ci }}</td>
                 <td class="text-xs-left">{{ props.item.appat }}</td>
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
@@ -84,13 +84,20 @@
             </tr>
         </template>
         <template slot="expand" slot-scope="props">
-          <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
-            <v-avatar>
-              <!-- <v-icon>account_circle</v-icon> -->
-              <i :class="icons[materia.id]"></i>
-            </v-avatar>
-            {{ materia.nombre }}
-          </v-chip>
+          <div v-if="props.item.materias.length">
+            <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
+              <v-avatar>
+                <!-- <v-icon>account_circle</v-icon> -->
+                <i :class="icons[materia.id]"></i>
+              </v-avatar>
+              {{ materia.nombre }}
+            </v-chip>
+          </div>
+          <v-card v-else>
+            <v-card-title class="ml-5 pink--text" primary-title>
+              EL DOCENTE NO DICTA NINGUNA MATERIA
+            </v-card-title>
+          </v-card>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
             No se encontró ningún resultado de la búsqueda de "{{ search }}".
@@ -149,9 +156,6 @@ export default {
     },
 
     deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
     },
 
     close() {

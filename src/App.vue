@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <v-app>
+       <v-jumbotron height="100%" color="primary">
      <!--  <nav-bar></nav-bar> -->
       <barra-nav v-if="this.$route.fullPath != '/login'"></barra-nav>
       <!-- <div id="nav">
@@ -25,7 +26,7 @@
             </v-app>
           </v-flex>
         </v-layout>
-        
+       </v-jumbotron>
       <!-- <pie-pagina></pie-pagina> -->
       
     </v-app>
