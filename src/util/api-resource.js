@@ -10,6 +10,7 @@ const INSCRIBIR_URL = API_URL + "admin/inscripcion";
 const TEACHER_URL = API_URL + "admin/profesor";
 const HORARIO_URL = API_URL + "admin/horario/curso/";
 const ESTUDIANTES_URL = API_URL + "admin/estudiantes";
+const ESTUDIANTE_URL = API_URL + "admin/estudiante/";
 const DOCENTES_URL = API_URL + "admin/profesores";
 const DOCENTE_URL = API_URL + "admin/profesor/";
 
@@ -276,6 +277,35 @@ const estudiantes = {
         });
     });
   },
+
+  saveStudent(creds, id) {
+    return new Promise((resolve, reject) => {
+      //console.log(local.get('user').token);
+      axios({
+          method: "put",
+          url: ESTUDIANTE_URL + id,
+          data: creds,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          //console.log(local.get('user').token);
+          let resp = {
+            msg: null
+          };
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+          }
+          resp.msg = response.data.usrmsg;
+          resolve(resp);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  }
 };
 
 const docentes = {
