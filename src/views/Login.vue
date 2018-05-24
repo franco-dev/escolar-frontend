@@ -81,7 +81,8 @@
     </v-layout> -->
     <!-- <v-app> -->
       <v-content>
-      <v-container fill-height>
+        <v-jumbotron height="100%" color="secondary">
+        <v-container fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12">
@@ -119,6 +120,7 @@
           </v-flex>
         </v-layout>
       </v-container>
+      </v-jumbotron>
       <v-snackbar
         :timeout="alert.timeout"
         :top="alert.y === 'top'"

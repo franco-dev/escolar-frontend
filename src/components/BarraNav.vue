@@ -1,11 +1,12 @@
 <template>
     <div> 
-        <v-toolbar color="primary" dark flat extended class="elevation-0 mb-3">
+        <v-toolbar color="primary" dark flat class="elevation-0 mb-3">
             <v-icon large>school</v-icon>
             <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
               <v-spacer></v-spacer>
                  <v-flex centered xs3>
                     <v-select
+                      class="mt-1"
                       :items="list_students"
                       v-model="e11"
                       :filter="customFilter"
@@ -87,7 +88,7 @@
                             <v-tabs
                                 
                                 v-model="active"
-                                color="grey darken-3"
+                                color="secondary"
                                 height="60"
                                 dark
                                 show-arrows
@@ -280,12 +281,12 @@ export default {
 
 <style>
 .tabs__item--active {
-  background-color: #eeeeee;
+  background-color: #E0E0E0;
   color: black;
-}
-.tabs__item {
-  color: #616161;
-}
+  }
+  .tabs__item {
+    color: #616161;
+  }
 
 .titulo {
   font-family: Luciano;
@@ -294,8 +295,4 @@ export default {
 .list__tile--disabled {
   color: black;
 }
-
-.card--flex-toolbar {
-    margin-top: -60px;
-  }
 </style>

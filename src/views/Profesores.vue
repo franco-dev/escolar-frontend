@@ -1,7 +1,7 @@
 <template>
     <v-container>
      <h2>GESTIONAR PROFESORES</h2>
-     <v-dialog v-model="dialog" max-width="500px">
+     <v-dialog v-model="dialog"  max-width="500px">
       <!-- <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Profesor</v-btn> -->
       <v-card>
         <v-card-title>
@@ -24,6 +24,20 @@
               </v-flex>
               <v-flex xs12>
                 <v-text-field v-model="editedItem.dir" label="Dirección"></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-select
+                  :items="getMaterias"
+                  v-model="materias"
+                  label="Select"
+                  multiple
+                  item-text="nombre"
+                  item-value="id"
+                  chips
+                  max-height="400"
+                  hint="Materias a dictadas por el docente."
+                  persistent-hint
+                ></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -113,6 +127,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import resource from "@/util/api-resource";
+import router from "@/router";
 export default {
   data() {
     return {
@@ -139,12 +154,14 @@ export default {
         dir: null,
         materias: []
       },
+      materias: [],
       editedIndex: -1,
       formTitle: "ACTUALIZAR DATOS DEL PROFESOR"
     };
   },
   computed: {
-    ...mapState(["teachers", 'icons'])
+    ...mapState(["teachers", "icons"]),
+    ...mapGetters(["getMaterias"])
   },
 
   methods: {
@@ -152,11 +169,14 @@ export default {
     editItem(item) {
       this.editedIndex = item.id;
       this.editedItem = Object.assign({}, item);
+      this.editedItem.materias = [];
+      item.materias.forEach(materia => {
+        this.materias.push(materia.id);
+      });
       this.dialog = true;
     },
 
-    deleteItem(item) {
-    },
+    deleteItem(item) {},
 
     close() {
       this.dialog = false;
@@ -166,12 +186,24 @@ export default {
       }, 300);
     },
 
+    obtener_profesores() {
+      this.get_teachers()
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
     save() {
+      this.editedItem.materias = Object.assign([], this.materias);
       if (this.editedIndex > -1) {
         resource.docentes
           .saveTeacher(this.editedItem, this.editedIndex)
           .then(response => {
             console.log(response);
+            this.obtener_profesores();
           })
           .catch(e => {
             console.log(e);
@@ -182,17 +214,10 @@ export default {
   },
 
   mounted() {
-    this.get_teachers()
-      .then(response => {
-        console.log(response);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.obtener_profesores();
   }
 };
 </script>
 
 <style scoped>
-
 </style>

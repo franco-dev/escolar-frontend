@@ -1,12 +1,12 @@
 <template>
     <nav>
-    <v-toolbar class="hidden-sm-and-down" flat color="grey lighten-3">
+    <v-toolbar class="hidden-sm-and-down" flat color="tertiary">
      <!--  <v-toolbar-title>
         <router-link class="nav-item" to="/">MySite</router-link>
       </v-toolbar-title> -->
       <v-spacer></v-spacer>
       <v-toolbar-items class="mr-0">
-        <v-btn v-for="item in items" :key="item.title" flat="flat" :to="{name: item.ruta}">
+        <v-btn v-for="item in items" :key="item.title" flat :to="{name: item.ruta}">
           <v-icon class="pr-3"> {{ item.icon }} </v-icon>
           {{ item.title }}
         </v-btn>
