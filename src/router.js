@@ -8,13 +8,14 @@ import Estudiantes from './views/Estudiantes';
 import Profesores from './views/Profesores.vue';
 import NotFound from './views/NotFound.vue';
 
+import Estudiante from './views/Estudiante.vue';
+
 import Horario from './views/Horario.vue';
 
 Vue.use(Router);
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'main',
       component: Main
@@ -28,11 +29,30 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin,
-      children: [
-        {path: 'cursos', component: Cursos, name: 'cursos'},
-        {path: 'profesores', component: Profesores, name: 'profesores'},
-        {path: 'estudiantes', component: Estudiantes, name: 'estudiantes'},
-        {path: 'horarios', component: Horario, name: 'horarios'},
+      children: [{
+          path: 'cursos',
+          component: Cursos,
+          name: 'cursos'
+        },
+        {
+          path: 'profesores',
+          component: Profesores,
+          name: 'profesores'
+        },
+        {
+          path: 'estudiantes',
+          component: Estudiantes,
+          name: 'estudiantes'
+        },
+        {
+          path: 'horarios',
+          component: Horario,
+          name: 'horarios'
+        },
+        {
+          path: '/estudiante/:id',
+          component: Estudiante
+        },
       ]
     },
     {

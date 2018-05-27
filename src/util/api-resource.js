@@ -278,6 +278,30 @@ const estudiantes = {
     });
   },
 
+  get_student(id) {
+    return new Promise((resolve, reject) => {
+      //console.log(local.get('user').token);
+      axios({
+          method: "get",
+          url: ESTUDIANTE_URL + id,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          //console.log(local.get('user').token);
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+          }
+          resolve(response.data.content.data);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+
   saveStudent(creds, id) {
     return new Promise((resolve, reject) => {
       //console.log(local.get('user').token);

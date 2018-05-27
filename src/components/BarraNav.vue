@@ -29,7 +29,7 @@
                     >
           <template slot="item" slot-scope="data">
             <template>
-              <v-list-tile-content>
+              <v-list-tile-content @click="redirect(data.item)">
                 <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="data.item.username"></v-list-tile-sub-title>                
               </v-list-tile-content>
@@ -195,6 +195,8 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["obtenerCursos", 'get_students']),
+
     redirigir(item) {
       this.$router.push(item.ruta);
     },
@@ -202,7 +204,9 @@ export default {
       item.dialog = false;
     },
 
-    ...mapActions(["obtenerCursos", 'get_students']),
+    redirect(item) {
+      this.$router.push(`/estudiante/${item.id}`);
+    },
 
     logout() {
       this.dialog.dialog = false;
