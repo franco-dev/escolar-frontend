@@ -18,8 +18,11 @@ import 'vuetify/dist/vuetify.css';
 
 Vue.use(Vuetify, {
   theme: {
-    primary: "#424242",
-    secondary: "#616161",
+    /* primary: "#424242", */
+    primary: "#212121",
+    /* secondary: "#616161", */
+    secondary: "#424242",
+    tertiary: "#E0E0E0",
     accent: "#9c27b0",
     error: "#FF5252",
     warning: "#FFC107",

@@ -27,7 +27,7 @@
     :headers="headers"
     :items="cursos"
     :pagination.sync="pagination"
-    class="elevation-5"
+    class="elevation-5 ml-3"
     item-key="id"
     hide-actions
   >

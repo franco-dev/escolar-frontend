@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <v-app>
+       <v-jumbotron height="100%" color="primary">
      <!--  <nav-bar></nav-bar> -->
       <barra-nav v-if="this.$route.fullPath != '/login'"></barra-nav>
       <!-- <div id="nav">
@@ -25,7 +26,7 @@
             </v-app>
           </v-flex>
         </v-layout>
-        
+       </v-jumbotron>
       <!-- <pie-pagina></pie-pagina> -->
       
     </v-app>
@@ -57,7 +58,7 @@ export default {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #263238;
+  /* background-color: #e0e0e0; */
 }
 
 @font-face {

@@ -1,7 +1,7 @@
 <template>
     <v-container>
      <h2>GESTIONAR PROFESORES</h2>
-     <v-dialog v-model="dialog" max-width="500px">
+     <v-dialog v-model="dialog"  max-width="500px">
       <!-- <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Profesor</v-btn> -->
       <v-card>
         <v-card-title>
@@ -24,6 +24,20 @@
               </v-flex>
               <v-flex xs12>
                 <v-text-field v-model="editedItem.dir" label="Dirección"></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-select
+                  :items="getMaterias"
+                  v-model="materias"
+                  label="Select"
+                  multiple
+                  item-text="nombre"
+                  item-value="id"
+                  chips
+                  max-height="400"
+                  hint="Materias a dictadas por el docente."
+                  persistent-hint
+                ></v-select>
               </v-flex>
             </v-layout>
           </v-container>
@@ -55,7 +69,7 @@
         class="elevation-1"
     >
         <template slot="items" slot-scope="props">
-            <tr @click="props.expanded = !props.expanded">
+            <tr @click.stop="props.expanded = false">
                 <td class="text-xs-right">{{ props.item.ci }}</td>
                 <td class="text-xs-left">{{ props.item.appat }}</td>
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
@@ -84,13 +98,20 @@
             </tr>
         </template>
         <template slot="expand" slot-scope="props">
-          <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
-            <v-avatar>
-              <!-- <v-icon>account_circle</v-icon> -->
-              <i :class="icons[materia.id]"></i>
-            </v-avatar>
-            {{ materia.nombre }}
-          </v-chip>
+          <div v-if="props.item.materias.length">
+            <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
+              <v-avatar>
+                <!-- <v-icon>account_circle</v-icon> -->
+                <i :class="icons[materia.id]"></i>
+              </v-avatar>
+              {{ materia.nombre }}
+            </v-chip>
+          </div>
+          <v-card v-else>
+            <v-card-title class="ml-5 pink--text" primary-title>
+              EL DOCENTE NO DICTA NINGUNA MATERIA
+            </v-card-title>
+          </v-card>
         </template>
         <v-alert slot="no-results" :value="true" color="error" icon="warning">
             No se encontró ningún resultado de la búsqueda de "{{ search }}".
@@ -106,6 +127,7 @@
 <script>
 import { mapActions, mapState, mapGetters } from "vuex";
 import resource from "@/util/api-resource";
+import router from "@/router";
 export default {
   data() {
     return {
@@ -132,12 +154,14 @@ export default {
         dir: null,
         materias: []
       },
+      materias: [],
       editedIndex: -1,
       formTitle: "ACTUALIZAR DATOS DEL PROFESOR"
     };
   },
   computed: {
-    ...mapState(["teachers", 'icons'])
+    ...mapState(["teachers", "icons"]),
+    ...mapGetters(["getMaterias"])
   },
 
   methods: {
@@ -145,14 +169,14 @@ export default {
     editItem(item) {
       this.editedIndex = item.id;
       this.editedItem = Object.assign({}, item);
+      this.editedItem.materias = [];
+      item.materias.forEach(materia => {
+        this.materias.push(materia.id);
+      });
       this.dialog = true;
     },
 
-    deleteItem(item) {
-      const index = this.desserts.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.desserts.splice(index, 1);
-    },
+    deleteItem(item) {},
 
     close() {
       this.dialog = false;
@@ -162,12 +186,24 @@ export default {
       }, 300);
     },
 
+    obtener_profesores() {
+      this.get_teachers()
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+
     save() {
+      this.editedItem.materias = Object.assign([], this.materias);
       if (this.editedIndex > -1) {
         resource.docentes
           .saveTeacher(this.editedItem, this.editedIndex)
           .then(response => {
             console.log(response);
+            this.obtener_profesores();
           })
           .catch(e => {
             console.log(e);
@@ -178,17 +214,10 @@ export default {
   },
 
   mounted() {
-    this.get_teachers()
-      .then(response => {
-        console.log(response);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.obtener_profesores();
   }
 };
 </script>
 
 <style scoped>
-
 </style>
