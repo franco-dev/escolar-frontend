@@ -4,7 +4,7 @@ import store from "@/store/store";
 
 // URL's
 const API_URL = "http://blackcrozz.com/escolar-api/";
-const LOGIN_URL = API_URL + "admin/login";
+const ADMIN_LOGIN_URL = API_URL + "admin/login";
 const CURSOS_URL = API_URL + "admin/cursos";
 const INSCRIBIR_URL = API_URL + "admin/inscripcion";
 const TEACHER_URL = API_URL + "admin/profesor";
@@ -33,7 +33,7 @@ const auth = {
     return new Promise((resolve, reject) => {
       axios({
         method: "post",
-        url: LOGIN_URL,
+        url: ADMIN_LOGIN_URL,
         data: creds,
         headers: {
           "Content-Type": "application/json"

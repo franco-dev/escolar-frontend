@@ -63,7 +63,10 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-Vue.filter('literal', function (value) {
+Vue.filter('upper', (value) => {
+     return value.toUpperCase();
+});
+Vue.filter('literal', (value) => {
   let literal = "";
   switch (value) {
     case 1:

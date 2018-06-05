@@ -89,7 +89,7 @@
               <v-toolbar dark color="primary" class="pt-2 pb-2">
                 <!-- <v-icon large>school</v-icon> -->
                   <img width="50px" src="./../assets/school_logo.png">
-                <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text">Escolar</span></v-toolbar-title>
+                <v-toolbar-title class="titulo">Inicio de <span class="light-blue--text">Sesión</span></v-toolbar-title>
                <!--  <v-spacer></v-spacer> -->
               </v-toolbar>
                <v-form @submit.prevent="submit" ref="form">
