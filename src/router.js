@@ -7,6 +7,8 @@ import Cursos from './views/Cursos.vue';
 import Estudiantes from './views/Estudiantes';
 import Profesores from './views/Profesores.vue';
 import NotFound from './views/NotFound.vue';
+import Teacher from './views/Teacher.vue';
+import TeacherCourses from './views/TeacherCourses.vue';
 
 import Estudiante from './views/Estudiante.vue';
 
@@ -24,6 +26,16 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/profesor',
+      name: 'prof',
+      component: Teacher,
+    },
+    {
+      path: '/mycourses',
+      component: TeacherCourses,
+      name: 'ProfCourses'
     },
     {
       path: '/admin',

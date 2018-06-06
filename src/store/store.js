@@ -9,6 +9,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    login: null,
     icons: {
       6: "fas fa-calculator",
       2: "fas fa-pencil-alt",
@@ -95,7 +96,9 @@ export default new Vuex.Store({
       }
     }
   },
-  mutations: {},
+  mutations: {
+    setLogin: (state, person) => state.login = person 
+  },
   actions: {},
   modules: {
     cursos,
