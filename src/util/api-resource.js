@@ -3,8 +3,8 @@ import router from "@/router";
 import store from "@/store/store";
 
 // URL's
-const API_URL = "http://blackcrozz.com/escolar-api/";
-const LOGIN_URL = API_URL + "admin/login";
+const API_URL = "http://sansebastianb.com/escolarapi/";
+const ADMIN_LOGIN_URL = API_URL + "admin/login";
 const CURSOS_URL = API_URL + "admin/cursos";
 const INSCRIBIR_URL = API_URL + "admin/inscripcion";
 const TEACHER_URL = API_URL + "admin/profesor";
@@ -13,6 +13,7 @@ const ESTUDIANTES_URL = API_URL + "admin/estudiantes";
 const ESTUDIANTE_URL = API_URL + "admin/estudiante/";
 const DOCENTES_URL = API_URL + "admin/profesores";
 const DOCENTE_URL = API_URL + "admin/profesor/";
+const DOCENTE_LOGIN_URL = API_URL + "prof/login";
 
 const local = {
   get(credencial) {
@@ -33,7 +34,7 @@ const auth = {
     return new Promise((resolve, reject) => {
       axios({
         method: "post",
-        url: LOGIN_URL,
+        url: ADMIN_LOGIN_URL,
         data: creds,
         headers: {
           "Content-Type": "application/json"
@@ -51,8 +52,47 @@ const auth = {
             local.set("materias", response.data.content.data.materias);
             console.log("token de Login: " + response.data.content.token);
             store.commit("setMaterias", response.data.content.data.materias);
+            local.set('logged', 'admin');
             /*  if (creds.remember) local.set('login-user', creds);
                         else local.remove('login-user'); */
+            router.push(redirect);
+            resp.enter = true;
+          }
+          resp.msg = response.data.usrmsg;
+          resolve(resp);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+
+  loginTeacher(creds, redirect) {
+    return new Promise((resolve, reject) => {
+      axios({
+          method: "post",
+          url: DOCENTE_LOGIN_URL,
+          data: creds,
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          let code = response.data.code;
+          let resp = {
+            msg: null,
+            enter: false
+          };
+          if (code == 200) {
+            /* local.set("user", response.data.content.data.admin); */
+            local.set("token", response.data.content.token);
+            local.set("actual", response.data.content.data.curso_actual);
+            local.set('logged', 'teacher');
+            /* console.log("token de Login: " + response.data.content.token); */
+            store.commit("setCursos", response.data.content.data.cursos);
+            /*  if (creds.remember) local.set('login-user', creds);
+                        else local.remove('login-user'); */
+            console.log(response);
             router.push(redirect);
             resp.enter = true;
           }

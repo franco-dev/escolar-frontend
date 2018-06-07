@@ -1,10 +1,10 @@
 <template>
     <div> 
         <v-toolbar color="primary" dark flat class="elevation-0 mb-3">
-            <v-icon large>school</v-icon>
-            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
+            <img width="50px" src="./../assets/school_logo.png">
+            <v-toolbar-title class="titulo">SIA <span class="light-blue--text mr-5"> San Sebastián B</span></v-toolbar-title>
               <v-spacer></v-spacer>
-                 <v-flex centered xs3>
+                 <v-flex v-if="login === 'admin'" centered xs3>
                     <v-select
                       class="mt-1"
                       :items="list_students"
@@ -44,6 +44,7 @@
                   </v-flex>
             <v-spacer></v-spacer>
             <v-menu
+              v-if="login === 'admin'"
               origin="center center"
               transition="scale-transition"
               bottom
@@ -58,8 +59,8 @@
                   <v-dialog v-model="item.dialog" lazy fullscreen transition="dialog-bottom-transition" :overlay="false">
                     <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
                     <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
-                    <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
-                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso>
+                    <!-- <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
+                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso> -->
                   </v-dialog>
                 </v-list-tile>
               </v-list>
@@ -97,6 +98,7 @@
                             >
                                 <v-tab
                                 v-for="(tab) in tabsData"
+                                v-if="login === tab.logged"
                                 :key="tab.title"
                                 target
                                 :to="tab.ruta"
@@ -141,6 +143,7 @@ export default {
 
   data() {
     return {
+      login: null,
       e11: [],
         customFilter (item, queryText, itemText) {
           const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
@@ -168,19 +171,28 @@ export default {
         msg: null
       },
       tabsData: [
-        { title: "Inicio", icon: "home", ruta: "/", color: "blue" },
+        { title: "Inicio", icon: "home", ruta: "/", color: "blue", logged: 'admin' },
         {
           title: "Administrar",
           icon: "folder_shared",
           ruta: "/admin",
-          color: "red"
+          color: "red",
+          logged: 'admin',
+        },
+        { title: "Inicio", icon: "home", ruta: "/profesor", color: "blue", logged: 'teacher' },
+        {
+          title: "Mis Cursos",
+          icon: "folder_shared",
+          ruta: "mycourses",
+          color: "red",
+          logged: 'teacher',
         }
       ],
       items: [
         { title: "Nuevo Profesor", dialog: false, action: this.guardarProfesor},
         { title: "Nuevo Estudiante", dialog: false, action:  this.guardarEstudiante},
-        { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
-        { title: "Nueva Materia", dialog: false, action:  this.guardarMateria}
+       /*  { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
+        { title: "Nueva Materia", dialog: false, action:  this.guardarMateria} */
       ],
       menu: [
         {
@@ -251,7 +263,9 @@ export default {
   },
 
    mounted() {
-    if (resource.auth.checkAuth()) {
+     this.login = resource.local.get("logged");
+     if (this.login === 'admin') {
+       if (resource.auth.checkAuth()) {
       store.commit("setMaterias", resource.local.get("materias"));
       if (!this.cursos[0]) {
         this.obtenerCursos()
@@ -279,6 +293,7 @@ export default {
             console.log(e);
           });
     }
+     }
   }
 };
 </script>

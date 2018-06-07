@@ -63,7 +63,7 @@ export default {
 
 @font-face {
   font-family: Luciano;
-  src: url(./fonts/Luciano.ttf);
+  src: url(./fonts/KaushanScript-Regular.ttf);
 }
 
 .custom-loader {
@@ -73,7 +73,7 @@ export default {
 
 .titulo {
   font-family: Luciano;
-  font-size: 250%;
+  font-size: 200%;
 }
 
 @-moz-keyframes loader {

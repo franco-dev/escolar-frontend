@@ -84,12 +84,33 @@
         <v-jumbotron height="100%" color="secondary">
         <v-container fill-height>
         <v-layout align-center justify-center>
-          <v-flex xs12 sm8 md4>
+          <v-flex xs12 sm8 md5>
             <v-card class="elevation-12">
-              <v-toolbar dark color="primary" class="pt-2 pb-2">
+              <v-toolbar dark color="primary" class="pt-2 pb-3">
                 <!-- <v-icon large>school</v-icon> -->
-                  <img width="50px" src="./../assets/school_logo.png">
-                <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text">Escolar</span></v-toolbar-title>
+                  <img class="mt-3" width="70px" src="./../assets/school_logo.png">
+                  <v-layout row wrap>
+                    <v-flex xs7>
+                      <v-toolbar-title class="titulo">
+                        Inicio de Sesión
+                        <v-layout row wrap>
+                          <span class="light-blue--text subheading mt-0 pt-0"> SIA San Sebastián B</span>
+                        </v-layout>
+                        
+                      </v-toolbar-title>
+                    </v-flex>
+                    <v-flex xs5>
+                      <v-toolbar-title>
+                        <v-switch
+                          v-model="login"
+                          :label="login ? 'Admin' : 'Profesor'"
+                          color="light-blue"
+                          class="mt-3 ml-3"
+                          hide-details
+                        ></v-switch>
+                      </v-toolbar-title>
+                    </v-flex>
+                  </v-layout>
                <!--  <v-spacer></v-spacer> -->
               </v-toolbar>
                <v-form @submit.prevent="submit" ref="form">
@@ -153,6 +174,7 @@ export default {
 
     return {
       form: Object.assign({}, defaultForm),
+      login: false,
       alert: {
         visible: false,
         color: "primary",
@@ -199,7 +221,8 @@ export default {
     },
 
     submit() {
-      resource.auth
+      if (this.login) {
+        resource.auth
         .login(this.form, "/")
         .then(response => {
           this.formState.loading = false;
@@ -209,6 +232,18 @@ export default {
         .catch(e => {
           console.log(e);
         });
+      } else {
+        resource.auth
+        .loginTeacher(this.form, "/profesor")
+        .then(response => {
+          this.formState.loading = false;
+          this.alert.text = response.msg;
+          this.alert.visible = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      }
       this.resetForm();
     },
   }

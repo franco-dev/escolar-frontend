@@ -1,6 +1,6 @@
 <template>
     <v-container>
-     <h2>GESTIONAR PROFESORES</h2>
+     <h2>GESTIONAR ESTUDIANTES</h2>
      <v-dialog v-model="dialog"  max-width="500px">
       <!-- <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Profesor</v-btn> -->
       <v-card>
@@ -38,7 +38,7 @@
       <v-text-field
         v-model="search"
         append-icon="search"
-        label="Buscar profesor..."
+        label="Buscar estudiante..."
         single-line
         hide-details
       ></v-text-field>
@@ -57,18 +57,12 @@
                 <td class="text-xs-left">{{ props.item.appat }}</td>
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
                 <td class="text-xs-left">{{ props.item.nombres }}</td>
-                <td class="text-xs-left layout px-0">
+                <td class="text-xs-center px-0">
                   <v-tooltip top>
-                    <v-btn icon class="mx-0" slot="activator" @click="editItem(props.item)">
-                        <v-icon color="teal">edit</v-icon>
+                    <v-btn icon class="mx-0" slot="activator" :to="`/estudiante/${props.item.id}`">
+                        <v-icon color="teal">pageview</v-icon>
                     </v-btn>
-                    <span>Actualizar Datos</span>
-                  </v-tooltip>
-                  <v-tooltip top>
-                    <v-btn icon class="mx-0" slot="activator" @click="deleteItem(props.item)">
-                        <v-icon color="pink">delete</v-icon>
-                    </v-btn>
-                    <span>Dar de Baja</span>
+                    <span>Más información</span>
                   </v-tooltip>
                 </td>
             </tr>

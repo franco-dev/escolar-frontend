@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <v-jumbotron height="100%" class="main-content" color="white">
     Main
-  </div>
+  </v-jumbotron>
 </template>
 
 <script>
@@ -15,5 +15,7 @@
 </script>
 
 <style scoped>
-  
+  .main-content {
+  min-height: 465px;
+}
 </style>
