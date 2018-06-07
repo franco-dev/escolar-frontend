@@ -88,7 +88,7 @@
             <v-card class="elevation-12">
               <v-toolbar dark color="primary" class="pt-2 pb-3">
                 <!-- <v-icon large>school</v-icon> -->
-                  <img class="mt-3" width="70px" src="./../assets/school_logo.png">
+                  <img class="mt-3" width="60px" src="./../assets/school_logo.png">
                   <v-layout row wrap>
                     <v-flex xs7>
                       <v-toolbar-title class="titulo">
