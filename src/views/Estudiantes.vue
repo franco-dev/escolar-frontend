@@ -57,6 +57,7 @@
                 <td class="text-xs-left">{{ props.item.appat }}</td>
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
                 <td class="text-xs-left">{{ props.item.nombres }}</td>
+                <td class="text-xs-left">{{ props.item.username }}</td>
                 <td class="text-xs-center px-0">
                   <v-tooltip top>
                     <v-btn icon class="mx-0" slot="activator" :to="`/estudiante/${props.item.id}`">
@@ -94,6 +95,7 @@ export default {
         { text: "Ap. Paterno", value: "appat" },
         { text: "Ap. Materno", value: "apmat" },
         { text: "Nombres", value: "nombres" },
+        { text: "Nombre de Usuario", value: "username" },
         { text: "Acciones", sortable: false, value: "actions" }
       ],
       editedItem: {
@@ -111,7 +113,6 @@ export default {
   },
 
   methods: {
-    ...mapActions(["get_teachers"]),
     editItem(item) {
       this.editedIndex = item.id;
       this.editedItem = Object.assign({}, item);
@@ -128,16 +129,6 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       }, 300);
-    },
-
-    obtener_profesores() {
-      this.get_teachers()
-        .then(response => {
-          console.log(response);
-        })
-        .catch(e => {
-          console.log(e);
-        });
     },
 
     save() {
