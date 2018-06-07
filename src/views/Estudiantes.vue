@@ -1,6 +1,6 @@
 <template>
     <v-container>
-     <h2>GESTIONAR PROFESORES</h2>
+     <h2>GESTIONAR ESTUDIANTES</h2>
      <v-dialog v-model="dialog"  max-width="500px">
       <!-- <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Profesor</v-btn> -->
       <v-card>
@@ -38,7 +38,7 @@
       <v-text-field
         v-model="search"
         append-icon="search"
-        label="Buscar profesor..."
+        label="Buscar estudiante..."
         single-line
         hide-details
       ></v-text-field>

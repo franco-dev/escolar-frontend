@@ -3,7 +3,7 @@ import router from "@/router";
 import store from "@/store/store";
 
 // URL's
-const API_URL = "http://blackcrozz.com/escolar-api/";
+const API_URL = "http://sansebastianb.com/escolarapi/";
 const ADMIN_LOGIN_URL = API_URL + "admin/login";
 const CURSOS_URL = API_URL + "admin/cursos";
 const INSCRIBIR_URL = API_URL + "admin/inscripcion";

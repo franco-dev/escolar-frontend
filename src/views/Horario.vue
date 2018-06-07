@@ -107,7 +107,7 @@
           </v-list>
         </v-navigation-drawer>
         <v-layout row wrap>
-          <v-flex xs1>
+          <v-flex xs2>
             <v-layout row wrap>
             <v-flex xs12>
                 <v-card tile flat>
@@ -122,7 +122,7 @@
                     <template v-for="(item, index) in hora">
                       <v-list-tile avatar :key="item">
                         <v-list-tile-content>
-                          <v-list-tile-title class="text-xs-center"> {{item}} </v-list-tile-title>
+                          <v-list-tile-title class="text-xs-center caption"> {{item}} </v-list-tile-title>
                         </v-list-tile-content>
                       </v-list-tile>
                       <v-divider v-if="index + 1 < hora.length" :key="index"></v-divider>
@@ -132,7 +132,7 @@
               </v-flex>
             </v-layout>
           </v-flex>
-          <v-flex xs11>
+          <v-flex xs10>
             <v-layout row>
               <v-flex xs2 v-for="dia in horario" :key="dia.dia">
                 <v-card dark tile flat color="primary">
@@ -219,7 +219,7 @@ export default {
       loading2: false,
       materias: [],
       horario: [],
-      hora: ["08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00"]
+      hora: ["08:00 - 08:45", "08:45 - 09:30", "09:30 - 10:15", "10:15 - 11:00", "11:20 - 12:00", "12:00 - 12:40", "12:40 - 13:15"]
     };
   },
   methods: {

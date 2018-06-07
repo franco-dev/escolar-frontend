@@ -1,8 +1,8 @@
 <template>
     <div> 
         <v-toolbar color="primary" dark flat class="elevation-0 mb-3">
-            <v-icon large>school</v-icon>
-            <v-toolbar-title class="titulo">Proyecto <span class="light-blue--text mr-5">Escolar</span></v-toolbar-title>
+            <img width="50px" src="./../assets/school_logo.png">
+            <v-toolbar-title class="titulo">SIA <span class="light-blue--text mr-5"> San Sebastián B</span></v-toolbar-title>
               <v-spacer></v-spacer>
                  <v-flex v-if="login === 'admin'" centered xs3>
                     <v-select
@@ -59,8 +59,8 @@
                   <v-dialog v-model="item.dialog" lazy fullscreen transition="dialog-bottom-transition" :overlay="false">
                     <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
                     <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
-                    <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
-                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso>
+                    <!-- <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
+                    <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso> -->
                   </v-dialog>
                 </v-list-tile>
               </v-list>
@@ -191,8 +191,8 @@ export default {
       items: [
         { title: "Nuevo Profesor", dialog: false, action: this.guardarProfesor},
         { title: "Nuevo Estudiante", dialog: false, action:  this.guardarEstudiante},
-        { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
-        { title: "Nueva Materia", dialog: false, action:  this.guardarMateria}
+       /*  { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
+        { title: "Nueva Materia", dialog: false, action:  this.guardarMateria} */
       ],
       menu: [
         {
