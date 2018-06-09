@@ -4,6 +4,7 @@ import cursos from './modules/cursos';
 import materias from './modules/materias';
 import students from './modules/estudiantes';
 import teachers from './modules/docentes';
+import comunicados from './modules/comunicados';
 
 Vue.use(Vuex);
 
@@ -87,6 +88,10 @@ export default new Vuex.Store({
             `El parentesco debe contener al menos ${params} caracteres.`
           // custom messages
         },
+        campo: {
+          required: () => "Este campo no puede estar vacío",
+          min: (field, params) => `Este campo debe contener al menos ${params} caracteres.`
+        },
         curso: {
           required: "El curso al cual se inscribirá es requerido."
         },
@@ -104,6 +109,7 @@ export default new Vuex.Store({
     cursos,
     materias,
     students,
-    teachers
+    teachers,
+    comunicados
   }
 });

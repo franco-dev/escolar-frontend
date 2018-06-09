@@ -44,23 +44,31 @@
                   </v-flex>
             <v-spacer></v-spacer>
             <v-menu
-              v-if="login === 'admin'"
               origin="center center"
-              transition="scale-transition"
-              bottom
+              transition="slide-y-transition"
+              left
               dark
             >
               <v-btn flat icon slot="activator" color="pink">
                 <v-icon>add_circle</v-icon> 
               </v-btn>
               <v-list class="pt-0 pb-0">
-                <v-list-tile v-for="(item, i) in items" :key="i" @click.stop="item.dialog = true" >
+                <v-list-tile v-for="(item, i) in items" v-if="login === item.logged" :key="i" @click.stop="item.dialog = true" >
                   <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                  <v-dialog v-model="item.dialog" lazy fullscreen transition="dialog-bottom-transition" :overlay="false">
+                  <v-dialog v-model="item.dialog" lazy v-if="item.title != 'Nuevo Trabajo' && item.title != 'Nuevo Comunicado'" fullscreen transition="dialog-bottom-transition" :overlay="false">
                     <nuevo-estudiante v-if="item.title == 'Nuevo Estudiante'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-estudiante>
                     <nuevo-profesor v-if="item.title == 'Nuevo Profesor'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-profesor>
                     <!-- <nueva-materia v-if="item.title == 'Nueva Materia'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-materia>
                     <nuevo-curso v-if="item.title == 'Nuevo Curso'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-curso> -->
+                  </v-dialog>
+                  <v-dialog v-else
+                    v-model="item.dialog" 
+                    :overlay="false"
+                    max-width="500px"
+                    transition="dialog-transition"
+                  >
+                    <nueva-tarea v-if="item.title == 'Nuevo Trabajo'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nueva-tarea>
+                    <nuevo-comunicado v-if="item.title == 'Nuevo Comunicado'" :dialog="item.dialog" :item="item" :guardar="item.action" :cerrar="cerrar"></nuevo-comunicado>
                   </v-dialog>
                 </v-list-tile>
               </v-list>
@@ -87,7 +95,6 @@
             <v-flex xs11>
                     <div class="card--flex-toolbar">
                             <v-tabs
-                                
                                 v-model="active"
                                 color="secondary"
                                 height="60"
@@ -121,7 +128,9 @@ import resource from "@/util/api-resource";
 import NuevoEstudiante from "@/components/NuevoEstudiante";
 import NuevaMateria from "@/components/NuevaMateria";
 import NuevoCurso from "@/components/NuevoCurso";
+import NuevaTarea from "@/components/NuevaTarea";
 import NuevoProfesor from "@/components/NuevoProfesor";
+import NuevoComunicado from "@/components/NuevoComunicado";
 import { EventBus } from "@/util/EventBus";
 import DialogAlert from "@/components/DialogAlert";
 import { mapActions, mapState, mapGetters } from "vuex";
@@ -133,27 +142,37 @@ export default {
     NuevaMateria,
     NuevoCurso,
     NuevoProfesor,
-    DialogAlert
+    DialogAlert,
+    NuevaTarea,
+    NuevoComunicado
   },
 
   computed: {
     ...mapState(["cursos"]),
-    ...mapGetters(["list_students"]),
+    ...mapGetters(["list_students"])
   },
 
   data() {
     return {
       login: null,
       e11: [],
-        customFilter (item, queryText, itemText) {
-          const hasValue = val => val != null && val != '' ? val : '?°!"#$$&&/()=193512/*-+-.,'
-          const text = hasValue(item.name)
-          const ci = hasValue(item.ci)
-          const query = hasValue(queryText)
-          let nameReturn = text.toString().toLowerCase().indexOf(query.toString().toLowerCase());
-          let ciReturn = ci.toString().toLowerCase().indexOf(query.toString().toLowerCase());
-          return nameReturn > -1 || ciReturn > -1
-        },
+      news: null,
+      customFilter(item, queryText, itemText) {
+        const hasValue = val =>
+          val != null && val != "" ? val : '?°!"#$$&&/()=193512/*-+-.,';
+        const text = hasValue(item.name);
+        const ci = hasValue(item.ci);
+        const query = hasValue(queryText);
+        let nameReturn = text
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase());
+        let ciReturn = ci
+          .toString()
+          .toLowerCase()
+          .indexOf(query.toString().toLowerCase());
+        return nameReturn > -1 || ciReturn > -1;
+      },
       show: false,
       active: null,
       dialog: {
@@ -161,37 +180,69 @@ export default {
         msg: null,
         title: null,
         color: "primary"
-      }, 
+      },
       tab: null,
-        itemss: [
-          'web', 'shopping', 'videos', 'images', 'news'
-        ],
+      itemss: ["web", "shopping", "videos", "images", "news"],
       alert: {
         visible: false,
         msg: null
       },
       tabsData: [
-        { title: "Inicio", icon: "home", ruta: "/", color: "blue", logged: 'admin' },
+        {
+          title: "Inicio",
+          icon: "home",
+          ruta: "/",
+          color: "blue",
+          logged: "admin"
+        },
         {
           title: "Administrar",
           icon: "folder_shared",
           ruta: "/admin",
           color: "red",
-          logged: 'admin',
+          logged: "admin"
         },
-        { title: "Inicio", icon: "home", ruta: "/profesor", color: "blue", logged: 'teacher' },
+        {
+          title: "Inicio",
+          icon: "home",
+          ruta: "/profesor",
+          color: "blue",
+          logged: "teacher"
+        },
         {
           title: "Mis Cursos",
           icon: "folder_shared",
           ruta: "mycourses",
           color: "red",
-          logged: 'teacher',
+          logged: "teacher"
         }
       ],
       items: [
-        { title: "Nuevo Profesor", dialog: false, action: this.guardarProfesor},
-        { title: "Nuevo Estudiante", dialog: false, action:  this.guardarEstudiante},
-       /*  { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
+        {
+          title: "Nuevo Profesor",
+          dialog: false,
+          action: this.guardarProfesor,
+          logged: "admin"
+        },
+        {
+          title: "Nuevo Estudiante",
+          dialog: false,
+          action: this.guardarEstudiante,
+          logged: "admin"
+        },
+        {
+          title: "Nuevo Comunicado",
+          dialog: false,
+          action: this.guardarComunicado,
+          logged: "admin"
+        },
+        {
+          title: "Nuevo Trabajo",
+          dialog: false,
+          action: this.guardarTrabajo,
+          logged: "teacher"
+        }
+        /*  { title: "Nuevo Curso", dialog: false, action:  this.guardarCurso},
         { title: "Nueva Materia", dialog: false, action:  this.guardarMateria} */
       ],
       menu: [
@@ -201,13 +252,11 @@ export default {
           iconClass: "red--text mr-3",
           action: resource.auth.logout
         }
-      ],
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      ]
     };
   },
   methods: {
-    ...mapActions(["obtenerCursos", 'get_students']),
+    ...mapActions(["obtenerCursos", "get_students"]),
 
     redirigir(item) {
       this.$router.push(item.ruta);
@@ -247,6 +296,43 @@ export default {
       console.log("Guardando materia");
     },
 
+    guardarComunicado(item, form) {
+      resource.comunicados
+        .saveRelease(form)
+        .then(response => {
+          this.alert.msg = response.msg;
+          this.alert.visible = true;
+          this.obtenerComunicados();
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      item.dialog = false;
+    },
+
+    actualizarCurso(id) {
+      resource.trabajos
+        .get_course(id)
+        .then(response => {})
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    guardarTrabajo(item, form) {
+      let idd = form.id;
+      resource.trabajos
+        .saveJob(form)
+        .then(response => {
+          this.actualizarCurso(idd);
+          this.alert.msg = response.msg;
+          this.alert.visible = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+      item.dialog = false;
+    },
+
     guardarEstudiante(item, form) {
       resource.add
         .newStudent(form)
@@ -260,52 +346,65 @@ export default {
         });
       item.dialog = false;
     },
+
+    obtenerComunicados() {
+      resource.comunicados
+        .getReleases()
+        .then(response => {
+          console.log(response);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   },
 
-   mounted() {
-     this.login = resource.local.get("logged");
-     if (this.login === 'admin') {
-       if (resource.auth.checkAuth()) {
-      store.commit("setMaterias", resource.local.get("materias"));
-      if (!this.cursos[0]) {
-        this.obtenerCursos()
-          .then(response => {
-            if (!response.enter) {
-              this.dialog.msg = response.msg;
-              this.dialog.title = "Inctividad Prolongada";
-              this.dialog.dialog = true;
-            } else {
-              EventBus.$emit('cargar-select');
-            }
-          })
-          .catch(e => {
-            console.log(e);
-          });
-      } else {
-        EventBus.$emit('cargar-select');
-      }
+  mounted() {
+    this.login = resource.local.get("logged");
+    if (this.login === "admin") {
+      if (resource.auth.checkAuth()) {
+        store.commit("setMaterias", resource.local.get("materias"));
+        if (!this.cursos[0]) {
+          this.obtenerCursos()
+            .then(response => {
+              if (!response.enter) {
+                this.dialog.msg = response.msg;
+                this.dialog.title = "Inctividad Prolongada";
+                this.dialog.dialog = true;
+              } else {
+                EventBus.$emit("cargar-select");
+              }
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        } else {
+          EventBus.$emit("cargar-select");
+        }
 
-      this.get_students()
+        this.get_students()
           .then(response => {
-            console.log(response)
+            console.log(response);
           })
           .catch(e => {
             console.log(e);
           });
-    }
-     }
+      }
+    };
+
+    this.obtenerComunicados();
   }
 };
 </script>
 
 <style>
 .tabs__item--active {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   color: black;
-  }
-  .tabs__item {
-    color: #616161;
-  }
+}
+.tabs__item {
+  color: #616161;
+}
 
 .titulo {
   font-family: Luciano;
