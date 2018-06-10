@@ -20,7 +20,16 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'main',
-      component: Main
+      component: Main,
+      beforeEnter: (to, from, next) => {
+        let login = localStorage.getItem("logged");
+        if (login != undefined) login = JSON.parse(login);
+        if (login !== 'admin') {
+          next('/profesor');
+        } else {
+          next();
+        }
+      },
     },
     {
       path: '/login',
@@ -31,15 +40,42 @@ export default new Router({
       path: '/profesor',
       name: 'prof',
       component: Teacher,
+       beforeEnter: (to, from, next) => {
+         let login = localStorage.getItem("logged");
+         if (login != undefined) login = JSON.parse(login);
+         if (login !== 'teacher') {
+           next('/');
+         } else {
+           next();
+         }
+       },
     },
     {
       path: '/mycourses',
       component: TeacherCourses,
-      name: 'ProfCourses'
+      name: 'ProfCourses',
+       beforeEnter: (to, from, next) => {
+         let login = localStorage.getItem("logged");
+         if (login != undefined) login = JSON.parse(login);
+         if (login !== 'teacher') {
+           next('/');
+         } else {
+           next();
+         }
+       },
     },
     {
       path: '/admin',
       name: 'admin',
+       beforeEnter: (to, from, next) => {
+         let login = localStorage.getItem("logged");
+         if (login != undefined) login = JSON.parse(login);
+         if (login !== 'admin') {
+           next('/profesor');
+         } else {
+           next();
+         }
+       },
       component: Admin,
       redirect: '/admin/estudiantes',
       children: [{
@@ -70,6 +106,7 @@ export default new Router({
     },
     {
       path: '*',
+      name: 'notfound',
       component: NotFound
     }
   ]

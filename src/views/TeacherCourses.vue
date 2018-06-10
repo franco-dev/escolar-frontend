@@ -79,7 +79,7 @@
                                     <v-btn 
                                     class="mt-0"
                                     dark color="indigo"
-                                    @click="guardarNotas()"
+                                    @click.native="guardarNotas()"
                                     :loading="loading"
                                     :disabled="loading"
                                     >Guardar</v-btn>
@@ -173,7 +173,6 @@ export default {
       resource.trabajos
         .saveRatings(this.form)
         .then(response => {
-          console.log(response);
           this.actualizarCurso(this.course.id);
           this.msg.text = response.msg;
           this.msg.visible = true;

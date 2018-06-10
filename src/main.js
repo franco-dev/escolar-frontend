@@ -47,6 +47,8 @@ Vue.use(Vuetify, {
   }
 });
 
+let login = resource.local.get("logged");
+
 router.beforeEach((to, from, next) => {
   if(resource.auth.checkAuth() && to.path != '/login') {
     next();

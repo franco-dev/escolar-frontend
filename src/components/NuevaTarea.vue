@@ -19,8 +19,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="cerrar(item)">Close</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="submit()">Save</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="cerrar(item)">cerrar</v-btn>
+          <v-btn color="blue darken-1" flat @click.native="submit()">guardar</v-btn>
         </v-card-actions>
       </v-card>
 </template>
