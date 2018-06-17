@@ -15,7 +15,11 @@
                     <b>Fecha de Publicación:</b>
                   </v-flex>
                   <v-flex xs12 class="mt-0 pt-0 mb-2">
-                    {{ `${comunicado.hora} ${comunicado.fecha}` }}    
+                     <v-layout wrap class="mt-1 mr-1 ml-1">
+                        {{ comunicado.hora }}
+                        <v-spacer></v-spacer>
+                        {{ comunicado.fecha}}
+                    </v-layout>
                   </v-flex>
                 </v-layout>
               </v-card-title>

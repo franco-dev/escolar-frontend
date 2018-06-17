@@ -110,7 +110,7 @@
                                 target
                                 :to="tab.ruta"
                                 >
-                                    {{ tab.title }}
+                                    <span class="grey-darken-2--text">{{ tab.title }}</span>
                                     <v-icon v-if="active != tab.ruta" color="grey darken-2"> {{ tab.icon }} </v-icon>
                                     <v-icon v-else :color="tab.color"> {{ tab.icon }} </v-icon>
                                 </v-tab>
@@ -200,6 +200,13 @@ export default {
           icon: "folder_shared",
           ruta: "/admin",
           color: "red",
+          logged: "admin"
+        },
+        {
+          title: "Reportes",
+          icon: "description",
+          ruta: "/reportes",
+          color: "green",
           logged: "admin"
         },
         {
