@@ -299,7 +299,7 @@ export default {
 
     siguienteBimestre () {
       resource.bimestre
-        .get_bimester()
+        .next_bimester()
         .then(response => {
           console.log(response);
           this.alert.msg = response.msg;
