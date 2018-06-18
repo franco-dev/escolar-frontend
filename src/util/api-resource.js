@@ -19,6 +19,8 @@ const CURSO_URL = API_URL + "prof/curso/";
 const NOTAS_URL = API_URL + "prof/notas";
 const COMUNICADOS_URL = API_URL + "comunicados";
 const COMUNICADO_URL = API_URL + "admin/comunicado";
+const ESTADISTICAS_URL = API_URL + "admin/stats";
+const BIMESTRE_URL = API_URL + "admin/bimestre";
 
 const local = {
   get(credencial) {
@@ -97,7 +99,6 @@ const auth = {
             /* store.commit("setCursos", response.data.content.data.cursos); */
             /*  if (creds.remember) local.set('login-user', creds);
                         else local.remove('login-user'); */
-            console.log(response);
             router.push(redirect);
             resp.enter = true;
           }
@@ -135,7 +136,7 @@ const cursos = {
           if (code == 200) {
             console.log(local.get("token"));
             local.set("token", response.data.content.token);
-            console.log(response.data.content.token);
+            //console.log(response.data.content.token);
             //console.log('Cambiooooo');
           }
           resolve(response.data);
@@ -226,7 +227,7 @@ const add = {
           if (code == 200) {
             console.log(local.get("token"));
             local.set("token", response.data.content.token);
-            console.log(response.data.content.token);
+            //console.log(response.data.content.token);
             resp.username = response.data.content.data;
           }
           resp.msg = response.data.usrmsg;
@@ -314,7 +315,7 @@ const estudiantes = {
           if (code == 200) {
             // console.log(local.get("token"));
             local.set("token", response.data.content.token);
-            console.log(response);
+            //console.log(response);
             //console.log(response.data.content.token);
             //console.log('Cambiooooo');
           }
@@ -447,7 +448,7 @@ const trabajos = {
           }
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           let resp = {
             msg: null
           };
@@ -494,13 +495,13 @@ const trabajos = {
     return new Promise((resolve, reject) => {
       //console.log(local.get('user').token);
       axios({
-        method: "post",
-        url: NOTAS_URL,
-        data: creds,
-        headers: {
-          Authorization: local.get("token")
-        }
-      })
+          method: "post",
+          url: NOTAS_URL,
+          data: creds,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
         .then(response => {
           //console.log(local.get('user').token);
           let resp = {
@@ -508,7 +509,7 @@ const trabajos = {
           };
           let code = response.data.code;
           if (code == 200) {
-            console.log(response);
+            //console.log(response);
             local.set("token", response.data.content.token);
           }
           resp.msg = response.data.usrmsg;
@@ -542,7 +543,7 @@ const comunicados = {
     });
   },
 
-  saveRelease(creds){
+  saveRelease(creds) {
     return new Promise((resolve, reject) => {
       //console.log(local.get('user').token);
       axios({
@@ -560,7 +561,7 @@ const comunicados = {
           };
           let code = response.data.code;
           if (code == 200) {
-            console.log(response);
+            //console.log(response);
             local.set("token", response.data.content.token);
           }
           resp.msg = response.data.usrmsg;
@@ -577,7 +578,7 @@ const comunicados = {
       //console.log(local.get('user').token);
       axios({
           method: "delete",
-          url: COMUNICADO_URL+"/"+id,
+          url: COMUNICADO_URL + "/" + id,
           headers: {
             Authorization: local.get("token")
           }
@@ -598,13 +599,64 @@ const comunicados = {
           reject(e);
         });
     });
+  },
+};
+
+const stats = {
+  getStats() {
+    return new Promise((resolve, reject) => {
+      //console.log(local.get('user').token);
+      axios({
+          method: "get",
+          url: ESTADISTICAS_URL,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+          }
+          resolve(response.data);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
   }
 };
+
+const bimestre = {
+  next_bimester() {
+    return new Promise((resolve, reject) => {
+      axios({
+          method: "get",
+          url: BIMESTRE_URL,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+          }
+          resolve(response.data);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+}
 
 export default {
   auth,
   local,
   cursos,
+  bimestre,
+  stats,
   add,
   horario,
   estudiantes,

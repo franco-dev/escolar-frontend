@@ -8,6 +8,7 @@ import Estudiantes from './views/Estudiantes';
 import Profesores from './views/Profesores.vue';
 import NotFound from './views/NotFound.vue';
 import Teacher from './views/Teacher.vue';
+import Reportes from './views/Reportes.vue';
 import TeacherCourses from './views/TeacherCourses.vue';
 
 import Estudiante from './views/Estudiante.vue';
@@ -35,6 +36,20 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/reportes',
+      name: 'reports',
+      component: Reportes,
+      beforeEnter: (to, from, next) => {
+        let login = localStorage.getItem("logged");
+        if (login != undefined) login = JSON.parse(login);
+        if (login !== 'admin') {
+          next('/profesor');
+        } else {
+          next();
+        }
+      },
     },
     {
       path: '/profesor',

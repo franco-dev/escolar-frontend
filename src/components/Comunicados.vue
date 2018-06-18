@@ -2,7 +2,7 @@
     <v-layout justify-center row wrap>
             <h3>Comunicados</h3>
             <v-flex xs12 class="scroll-box">
-              <v-card v-for="comunicado in comunicados" :key="comunicado.id" color="black" class="white--text mb-2">
+              <v-card v-for="comunicado in comunicados" :key="comunicado.id" color="grey darken-3" class="white--text mb-2">
               <v-card-title primary-title class="pb-0">
                 <v-layout row wrap>
                   <v-flex xs12 class="title pt-0 pb-0">
@@ -15,7 +15,11 @@
                     <b>Fecha de Publicación:</b>
                   </v-flex>
                   <v-flex xs12 class="mt-0 pt-0 mb-2">
-                    {{ `${comunicado.hora} ${comunicado.fecha}` }}    
+                     <v-layout wrap class="mt-1 mr-1 ml-1">
+                        {{ comunicado.hora }}
+                        <v-spacer></v-spacer>
+                        {{ comunicado.fecha}}
+                    </v-layout>
                   </v-flex>
                 </v-layout>
               </v-card-title>
@@ -90,6 +94,6 @@ export default {
 <style scoped>
 .scroll-box {
   overflow-y: scroll;
-  height: 400px;
+  height: 450px;
 }  
 </style>

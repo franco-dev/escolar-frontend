@@ -4,16 +4,22 @@
       <h1>Administrar Cursos</h1>
       <v-layout row wrap>
         <v-flex d-flex xs12 sm3 md3>
-          <estados :habilitados="estados.habilitados" :nohabilitados="estados.inhabilitados"></estados>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <estado :numero="estados.habilitados" imagen="checkbox-marked-circle-outline.png" text="white" dl="lighten-1" color="indigo" literal="Habilitados"></estado>
+            </v-flex>
+            <v-flex xs12>
+              <estado :numero="estados.inhabilitados" imagen="alert-circle-outline.png" text="white" dl="lighten-1" color="red" literal="Inhabilitados"></estado>
+            </v-flex>
+          </v-layout>
         </v-flex>
         <v-flex xs12 sm9 md9>
           <div class="text-xs-right">
 <v-btn
-      color="info"
+      color="primary"
       :loading="loading"
       @click.native="guardarCambios"
       :disabled="loading"
-      flat
     >
     <v-icon class="pr-1" dark>save</v-icon>
       Guardar 
@@ -77,13 +83,13 @@
 <script>
 import resource from "@/util/api-resource";
 
-import Estados from "@/components/Estados";
+import Estado from "@/components/Estado";
 import { mapActions, mapState } from "vuex";
 import { EventBus } from "@/util/EventBus";
 export default {
   name: "Cursos",
   components: {
-    Estados
+    Estado
   },
 
   created() {
