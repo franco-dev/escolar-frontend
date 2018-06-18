@@ -48,7 +48,7 @@
     </v-layout>
     </v-container>
     <v-layout v-if="!loading && !!materias.length"  row>
-        <v-navigation-drawer width="220" height="450px" class="mr-3 list-materias" :mini-variant.sync="mini" v-model="drawer" stateless hide-overlay>
+      <v-navigation-drawer width="220" height="450px" class="mr-3 list-materias" :mini-variant.sync="mini" v-model="drawer" stateless hide-overlay>
           <v-toolbar fixed flat class="">
             <v-list class="pa-0">
               <v-list-tile avatar>

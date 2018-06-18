@@ -1,8 +1,9 @@
 <template>
-    <v-jumbotron height="100%" class="courses-content" color="white">
-        <v-container grid-list-lg>
-            <v-layout row wrap v-if="course">
-                <v-flex xs12>
+        <v-container fluid grid-list-lg>
+          <v-layout row wrap>
+            <v-layout v-if="course" wrap row>
+              <v-layout wrap class="mr-0 ml-2">
+                 <v-flex xs12>
                     <h2>Curso Actual</h2>
                 </v-flex>
                 <v-flex xs4 style="font-weight: bold;">
@@ -22,6 +23,8 @@
                     <v-card>
                         <v-card-title>
                         <h3><b>Estudiantes</b></h3>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" dark @click.stop="drawer = !drawer">Cambiar Curso</v-btn>
                         <v-spacer></v-spacer>
                         <v-text-field
                             v-model="search"
@@ -88,11 +91,49 @@
                         </v-layout>
                     </v-card>
                 </v-flex>
-                <!-- <pre>
-                    {{ course }}
-                </pre> -->
+                <v-flex xs12>
+                </v-flex>
+              </v-layout>
             </v-layout>
-        </v-container>
+            <v-navigation-drawer
+            v-if="drawer && !!courses"
+      v-model="drawer"
+      :mini-variant="mini"
+      temporary
+      dark
+      right
+      absolute
+    >
+      <v-list class="pa-1">
+        <v-list-tile @click.stop="drawer = !drawer">
+          <v-list-tile-action>
+            <v-icon>chevron_right</v-icon>
+          </v-list-tile-action>
+        </v-list-tile>
+        <v-list-tile avatar tag="div">
+          <v-list-tile-avatar>
+            <v-icon>list</v-icon>
+          </v-list-tile-avatar>
+          <v-list-tile-content>
+            <v-list-tile-title>Mis cursos</v-list-tile-title>
+          </v-list-tile-content>
+          <v-list-tile-action>
+          </v-list-tile-action>
+        </v-list-tile>
+      </v-list>
+      <v-list class="pt-0" dense>
+        <v-divider light></v-divider>
+        <v-list-tile v-for="(item, index) in courses" :key="item.title" @click="actualizarCurso(item.id)">
+          <v-list-tile-action>
+            {{ index+1 }}
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>{{ item.nro | literal | upper }} {{ item.par }} {{ item.mat }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+          </v-layout>
         <v-snackbar
         :timeout="msg.timeout"
         :top="msg.y === 'top'"
@@ -106,7 +147,7 @@
         {{ msg.text }}
         <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
         </v-snackbar>
-    </v-jumbotron>
+        </v-container>
 </template>
 
 <script>
@@ -126,6 +167,7 @@ export default {
       loading: false,
       search: null,
       pagination: {},
+      courses: null,
       editable: {
         id_estudiante: null,
         id_trabajo: null
@@ -148,7 +190,14 @@ export default {
         { text: "Ap. Paterno", align: "center", value: "appat" },
         { text: "Ap. Materno", align: "center", value: "apmat" },
         { text: "Nombres", align: "center", value: "nombres" }
-      ]
+      ],
+      drawer: null,
+        items: [
+          { title: 'Home', icon: 'dashboard' },
+          { title: 'About', icon: 'question_answer' }
+        ],
+        mini: false,
+        right: null
     };
   },
 
@@ -184,6 +233,7 @@ export default {
     },
 
     actualizarCurso(id) {
+      this.drawer = false;
       resource.trabajos
         .get_course(id)
         .then(response => {
@@ -198,6 +248,7 @@ export default {
   mounted() {
     this.$validator.localize("en", this.dictionary);
     this.course = resource.local.get("actual");
+    this.courses = resource.local.get("courses");
     this.course.estudiantes.forEach(estudiante => {
       this.form.notas[estudiante.id] = {};
     });

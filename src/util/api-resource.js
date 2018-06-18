@@ -94,6 +94,7 @@ const auth = {
             local.set("user", response.data.content.data.profesor);
             local.set("token", response.data.content.token);
             local.set("actual", response.data.content.data.curso_actual);
+            local.set("courses", response.data.content.data.cursos);
             local.set('logged', 'teacher');
             /* console.log("token de Login: " + response.data.content.token); */
             /* store.commit("setCursos", response.data.content.data.cursos); */
