@@ -43,7 +43,7 @@
         </v-select>
                   </v-flex>
             <v-spacer></v-spacer>
-            <v-dialog v-model="dia_bimestre" persistent max-width="320">
+            <v-dialog  v-if="login === 'admin'" v-model="dia_bimestre" persistent max-width="320">
               <v-btn color="pink" slot="activator" flat @click="dia_bimestre = true">
                 <v-icon left>arrow_forward</v-icon>
                   <b>Siguiente Bimestre</b>
