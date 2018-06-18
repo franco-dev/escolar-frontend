@@ -20,6 +20,7 @@ const NOTAS_URL = API_URL + "prof/notas";
 const COMUNICADOS_URL = API_URL + "comunicados";
 const COMUNICADO_URL = API_URL + "admin/comunicado";
 const ESTADISTICAS_URL = API_URL + "admin/stats";
+const BIMESTRE_URL = API_URL + "admin/bimestre";
 
 const local = {
   get(credencial) {
@@ -626,10 +627,35 @@ const stats = {
   }
 };
 
+const bimestre = {
+  next_bimester() {
+    return new Promise((resolve, reject) => {
+      axios({
+          method: "get",
+          url: BIMESTRE_URL,
+          headers: {
+            Authorization: local.get("token")
+          }
+        })
+        .then(response => {
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+          }
+          resolve(response.data);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+}
+
 export default {
   auth,
   local,
   cursos,
+  bimestre,
   stats,
   add,
   horario,

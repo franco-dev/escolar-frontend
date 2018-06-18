@@ -41,7 +41,7 @@
                             <v-select
                             label="Gestión"
                             required
-                            :items="paralelos"
+                            :items="anual"
                             item-value="value"
                             v-model="gestion"
                             ></v-select>
@@ -54,14 +54,29 @@
                         :disabled="!cursoid || loading || !gestion"
                         color="primary"
                         class="white--text"
+                        :href="`https://sansebastianb.com/escolarapi/reporte/curso/${gestion}/${cursoid}`" target="_blank"
                         block
                         >
                             <v-icon left dark>list_alt</v-icon>
-                            Lista General
+                            LISTA GENERAL DEL CURSO
                         </v-btn>
                         </v-layout>
                         <v-spacer></v-spacer>
-                    </v-flex>
+                        </v-flex>
+                        <v-flex xs12>
+                            <v-btn
+                        :loading="loading"
+                        @click.native=""
+                        :disabled="!cursoid || loading || !gestion || !materia"
+                        color="primary"
+                        class="white--text"
+                        :href="`https://sansebastianb.com/escolarapi/reporte/materia/${gestion}/${cursoid}/${materia}`" target="_blank"
+                        block
+                        >
+                            <v-icon left dark>ballot</v-icon>
+                            LISTA ANUAL DE LA MATERIA
+                        </v-btn>
+                        </v-flex>
                    
                     <v-flex xs12>
                         <v-layout class="mt-2">
@@ -85,6 +100,7 @@
                         :disabled="bimestre.length <= 0"
                         color="indigo"
                         class="white--text mt-0"
+                        :href="`https://sansebastianb.com/escolarapi/reporte/boletin/${gestion}/${cursoid}/${bime}`" target="_blank"
                         block>
                             <v-icon left dark>assignment_returned</v-icon>
                             BOLETIN SEMESTRAL
@@ -96,6 +112,7 @@
                         :disabled="!cursoid || loading || !gestion"
                         color="primary"
                         class="white--text mt-0"
+                        :href="`https://sansebastianb.com/escolarapi/reporte/boletin/${gestion}/${cursoid}`" target="_blank"
                         block>
                             <v-icon left dark>assignment_turned_in</v-icon>
                             BOLETINES FINALES
@@ -107,7 +124,7 @@
                     <h2>DOCENTES</h2>
                     <v-layout row wrap>
                         <v-flex xs12 text-xs-center>
-                            <v-btn color="primary" block>
+                            <v-btn href="https://sansebastianb.com/escolarapi/reporte/docente" target="_blank" color="primary" block>
                                 <v-icon left dark>list</v-icon>
                                 Lista de Docentes
                             </v-btn>
@@ -134,6 +151,7 @@ export default {
           loading: false,
           materia: null,
           bimestre: [],
+          anual: [2018]
       }
   },
   computed: {
@@ -142,6 +160,14 @@ export default {
     paralelos() {
       return store.getters.paralelosCurso(this.curso);
     },
+
+    bime() {
+        let x = "";
+        this.bimestre.forEach(element => {
+            x += element;
+        });
+        return x;
+    }
   },
   mounted() {}
 };

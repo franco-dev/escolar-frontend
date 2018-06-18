@@ -43,6 +43,21 @@
         </v-select>
                   </v-flex>
             <v-spacer></v-spacer>
+            <v-dialog v-model="dia_bimestre" persistent max-width="320">
+              <v-btn color="pink" slot="activator" flat @click="dia_bimestre = true">
+                <v-icon left>arrow_forward</v-icon>
+                  <b>Siguiente Bimestre</b>
+              </v-btn>
+              <v-card>
+                <v-card-title class="headline">¡Advertencia!</v-card-title>
+                <v-card-text>Se cambiará el período académico al siguiente semestre, una vez hecho esto, todos los trabajos creados a partir de ahora perteneceran a este nuevo bimestre, esta acción no se puede deshacer.</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="error" @click.native="dia_bimestre = false">Cancelar</v-btn>
+                  <v-btn color="primary" @click.native="siguienteBimestre(); dia_bimestre = false">Aceptar</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <v-menu
               origin="center center"
               transition="slide-y-transition"
@@ -175,6 +190,7 @@ export default {
       },
       show: false,
       active: null,
+      dia_bimestre: false,
       dialog: {
         dialog: false,
         msg: null,
@@ -281,6 +297,18 @@ export default {
       resource.auth.logout();
     },
 
+    siguienteBimestre () {
+      resource.bimestre
+        .get_bimester()
+        .then(response => {
+          console.log(response);
+          this.alert.msg = response.msg;
+          this.alert.visible = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     guardarProfesor(item, form) {
       resource.add
         .newTeacher(form)
