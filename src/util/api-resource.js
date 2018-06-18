@@ -638,11 +638,15 @@ const bimestre = {
           }
         })
         .then(response => {
+          let resp = {
+            msg: null
+          };
           let code = response.data.code;
           if (code == 200) {
             local.set("token", response.data.content.token);
           }
-          resolve(response.data);
+          resp.msg = `${response.data.usrmsg}. Para ver los cambios por favor actualice la página.`;
+          resolve(resp);
         })
         .catch(e => {
           reject(e);
