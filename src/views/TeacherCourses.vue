@@ -1,4 +1,5 @@
 <template>
+<v-jumbotron height="100%" class="courses-content" color="white">
         <v-container fluid grid-list-lg>
           <v-layout row wrap>
             <v-layout v-if="course" wrap row>
@@ -148,6 +149,7 @@
         <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
         </v-snackbar>
         </v-container>
+</v-jumbotron>
 </template>
 
 <script>
