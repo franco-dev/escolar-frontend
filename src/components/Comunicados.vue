@@ -2,7 +2,7 @@
     <v-layout justify-center row wrap>
             <h3>Comunicados</h3>
             <v-flex xs12 class="scroll-box">
-              <v-card v-for="comunicado in comunicados" :key="comunicado.id" color="black" class="white--text mb-2">
+              <v-card v-for="comunicado in comunicados" :key="comunicado.id" color="grey darken-3" class="white--text mb-2">
               <v-card-title primary-title class="pb-0">
                 <v-layout row wrap>
                   <v-flex xs12 class="title pt-0 pb-0">
@@ -94,6 +94,6 @@ export default {
 <style scoped>
 .scroll-box {
   overflow-y: scroll;
-  height: 400px;
+  height: 450px;
 }  
 </style>

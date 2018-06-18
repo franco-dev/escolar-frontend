@@ -68,6 +68,6 @@ export default {
 
 <style scoped>
 .main-content {
-  min-height: 465px;
+  min-height: 100%;
 }
 </style>

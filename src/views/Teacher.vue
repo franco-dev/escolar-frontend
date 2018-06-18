@@ -2,10 +2,11 @@
     <v-jumbotron height="100%" class="teacher-content" color="white">
         <v-container grid-list-lg>
             <v-layout row wrap>
+                
                 <v-flex xs9>
                     <h2>Inicio</h2>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs3 color="red">
                     <comunicados></comunicados>
                 </v-flex>
             </v-layout>

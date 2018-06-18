@@ -33,7 +33,7 @@
 
 <script>
     export default {
-        props: ['habilitados', 'nohabilitados'],
+         
         data() {
             return {
                 

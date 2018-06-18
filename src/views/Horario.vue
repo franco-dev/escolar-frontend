@@ -29,9 +29,9 @@
               :loading="loading2"
               @click.native="saveHorario"
               :disabled="!cursoid || loading2"
-              color="blue-grey"
+              color="primary"
               class="white--text"
-              outline
+              block large
             >
               Guardar
               <v-icon right dark>save</v-icon>
