@@ -149,7 +149,7 @@
         <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
         </v-snackbar>
         </v-container>
-  </v-jumbotron>
+</v-jumbotron>
 </template>
 
 <script>
