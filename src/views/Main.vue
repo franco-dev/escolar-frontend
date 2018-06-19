@@ -58,6 +58,7 @@ export default {
       .getStats()
       .then(response => {
         this.stats = response.content.data;
+        resource.local.set("gestion", response.content.data.gestion);
       })
       .catch(e => {
         console.log(e);

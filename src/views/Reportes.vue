@@ -81,16 +81,16 @@
                     <v-flex xs12>
                         <v-layout class="mt-2">
                             <v-flex xs3>
-                                <v-checkbox color="indigo" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Primer" value="1"></v-checkbox>
+                                <v-checkbox color="primary" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Primer" value="1"></v-checkbox>
                             </v-flex>
                             <v-flex xs3>
-                                <v-checkbox color="indigo" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Segundo" value="2"></v-checkbox>
+                                <v-checkbox color="primary" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Segundo" value="2"></v-checkbox>
                             </v-flex>
                             <v-flex xs3>
-                                <v-checkbox color="indigo" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Tercer" value="3"></v-checkbox>
+                                <v-checkbox color="primary" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Tercer" value="3"></v-checkbox>
                             </v-flex>
                             <v-flex xs3>
-                                <v-checkbox color="indigo" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Cuarto" value="4"></v-checkbox>
+                                <v-checkbox color="primary" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Cuarto" value="4"></v-checkbox>
                             </v-flex>
                         </v-layout>
                     </v-flex>
@@ -98,7 +98,7 @@
                         <v-btn :loading="loading"
                         @click.native=""
                         :disabled="bimestre.length <= 0"
-                        color="indigo"
+                        color="primary"
                         class="white--text mt-0"
                         :href="`https://sansebastianb.com/escolarapi/reporte/boletin/${gestion}/${cursoid}/${bime}`" target="_blank"
                         block>
@@ -169,7 +169,13 @@ export default {
         return x;
     }
   },
-  mounted() {}
+  mounted() {
+    let a = resource.local.get("gestion");
+    //console.log(parseInt(a));
+    for (let i = 2018; i < parseInt(a); i++) {
+        this.anual.push(i+1);
+    }
+  }
 };
 </script>
 
