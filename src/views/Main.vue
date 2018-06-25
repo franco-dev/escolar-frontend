@@ -20,6 +20,9 @@
               <estado :numero="stats.trabajos" imagen="trabajos.png" text="grey" dl="lighten-1" color="green darken-4" literal="Trabajos"></estado>
             </v-flex>
           </v-layout>
+          <v-layout row wrap v-else xs12 justify-center fill-height class="mt-5">
+             <v-progress-circular :size="100" :width="7" indeterminate color="error"></v-progress-circular>
+          </v-layout>
         </v-flex>
         <v-flex xs12 md3 order-xs1 order-lg2>
           <comunicados></comunicados>

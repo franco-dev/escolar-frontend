@@ -113,7 +113,6 @@
                                 v-model="active"
                                 color="secondary"
                                 height="60"
-                                dark
                                 show-arrows
                                 hide-slider
                                 icons-and-text
@@ -123,6 +122,7 @@
                                 v-if="login === tab.logged"
                                 :key="tab.title"
                                 target
+                                dark
                                 :to="tab.ruta"
                                 >
                                     <span class="grey-darken-2--text">{{ tab.title }}</span>
@@ -301,7 +301,7 @@ export default {
       resource.bimestre
         .next_bimester()
         .then(response => {
-          console.log(response);
+          //console.log(response);
           this.alert.msg = response.msg;
           this.alert.visible = true;
         })
@@ -313,7 +313,7 @@ export default {
       resource.add
         .newTeacher(form)
         .then(response => {
-          console.log(response);
+          //console.log(response);
           this.alert.msg = response.msg;
           this.alert.visible = true;
         })
@@ -372,7 +372,7 @@ export default {
       resource.add
         .newStudent(form)
         .then(response => {
-          console.log(response);
+          //console.log(response);
           this.alert.msg = response.msg;
           this.alert.visible = true;
         })
@@ -386,7 +386,7 @@ export default {
       resource.comunicados
         .getReleases()
         .then(response => {
-          console.log(response);
+          //console.log(response);
         })
         .catch(e => {
           console.log(e);
@@ -419,7 +419,7 @@ export default {
 
         this.get_students()
           .then(response => {
-            console.log(response);
+            //console.log(response);
           })
           .catch(e => {
             console.log(e);

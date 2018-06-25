@@ -2,8 +2,8 @@
 <v-jumbotron height="100%" class="courses-content" color="white">
         <v-container fluid grid-list-lg>
           <v-layout row wrap>
-            <v-layout v-if="course" wrap row>
-              <v-layout wrap class="mr-0 ml-2">
+            <v-layout v-if="courses" wrap row>
+              <v-layout v-if="courses.length > 0" wrap class="mr-0 ml-2">
                  <v-flex xs12>
                     <h2>Curso Actual</h2>
                 </v-flex>
@@ -25,7 +25,7 @@
                         <v-card-title>
                         <h3><b>Estudiantes</b></h3>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" dark @click.stop="drawer = !drawer">Cambiar Curso</v-btn>
+                        <v-btn :disabled="courses.length <= 1" color="primary" @click.stop="drawer = !drawer">Cambiar Curso</v-btn>
                         <v-spacer></v-spacer>
                         <v-text-field
                             v-model="search"
@@ -82,7 +82,7 @@
                                 <div class="text-xs-right pt-2">
                                     <v-btn 
                                     class="mt-0"
-                                    dark color="indigo"
+                                    dark color="primary"
                                     @click.native="guardarNotas()"
                                     :loading="loading"
                                     :disabled="loading"
@@ -95,20 +95,40 @@
                 <v-flex xs12>
                 </v-flex>
               </v-layout>
+              <v-flex v-else xs12>
+                <h2>El docente no dicta aún ninguna materia.</h2>
+                <h3>Por favor contatece con el administrador para la respectiva asignación de materias y paralelos.</h3>
+              </v-flex>
             </v-layout>
-            <v-navigation-drawer
+          </v-layout>
+        <v-snackbar
+        :timeout="msg.timeout"
+        :top="msg.y === 'top'"
+        :bottom="msg.y === 'bottom'"
+        :right="msg.x === 'right'"
+        :left="msg.x === 'left'"
+        :multi-line="msg.mode === 'multi-line'"
+        :vertical="msg.mode === 'vertical'"
+        v-model="msg.visible"
+        >
+        {{ msg.text }}
+        <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
+        </v-snackbar>
+         <v-navigation-drawer
             v-if="drawer && !!courses"
-      v-model="drawer"
-      :mini-variant="mini"
-      temporary
-      dark
-      right
-      absolute
-    >
+            v-model="drawer"
+            :mini-variant="mini"
+            temporary
+            dark
+            right
+            absolute
+          >
       <v-list class="pa-1">
-        <v-list-tile @click.stop="drawer = !drawer">
+        <v-list-tile>
           <v-list-tile-action>
-            <v-icon>chevron_right</v-icon>
+            <v-btn flat icon dark @click.stop="drawer = !drawer">
+              <v-icon dark>chevron_right</v-icon>
+            </v-btn>
           </v-list-tile-action>
         </v-list-tile>
         <v-list-tile avatar tag="div">
@@ -134,21 +154,8 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-          </v-layout>
-        <v-snackbar
-        :timeout="msg.timeout"
-        :top="msg.y === 'top'"
-        :bottom="msg.y === 'bottom'"
-        :right="msg.x === 'right'"
-        :left="msg.x === 'left'"
-        :multi-line="msg.mode === 'multi-line'"
-        :vertical="msg.mode === 'vertical'"
-        v-model="msg.visible"
-        >
-        {{ msg.text }}
-        <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
-        </v-snackbar>
         </v-container>
+        
 </v-jumbotron>
 </template>
 
@@ -194,12 +201,12 @@ export default {
         { text: "Nombres", align: "center", value: "nombres" }
       ],
       drawer: null,
-        items: [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' }
-        ],
-        mini: false,
-        right: null
+      items: [
+        { title: "Home", icon: "dashboard" },
+        { title: "About", icon: "question_answer" }
+      ],
+      mini: false,
+      right: null
     };
   },
 
@@ -251,19 +258,21 @@ export default {
     this.$validator.localize("en", this.dictionary);
     this.course = resource.local.get("actual");
     this.courses = resource.local.get("courses");
-    this.course.estudiantes.forEach(estudiante => {
-      this.form.notas[estudiante.id] = {};
-    });
-    this.course.trabajos.forEach(trabajo => {
-      this.headers.push({
-        text: trabajo.nombre,
-        align: "center",
-        sortable: false,
-        value: `nota${trabajo.id}`,
-        bimestre: trabajo.bimestre,
-        fecha: trabajo.fecha
+    if (this.courses.length > 0) {
+      this.course.estudiantes.forEach(estudiante => {
+        this.form.notas[estudiante.id] = {};
       });
-    });
+      this.course.trabajos.forEach(trabajo => {
+        this.headers.push({
+          text: trabajo.nombre,
+          align: "center",
+          sortable: false,
+          value: `nota${trabajo.id}`,
+          bimestre: trabajo.bimestre,
+          fecha: trabajo.fecha
+        });
+      });
+    }
   }
 };
 </script>

@@ -64,10 +64,12 @@
         :headers="headers"
         :items="teachers"
         :search="search"
+        :loading="!loading"
         rows-per-page-text="Filas por página: "
         :rows-per-page-items="[5,10,20,{'text':'*','value':-1}]"
         class="elevation-1"
     >
+        <v-progress-linear slot="progress" color="primary" indeterminate></v-progress-linear>
         <template slot="items" slot-scope="props">
             <tr @click.stop="props.expanded = false">
                 <td class="text-xs-right">{{ props.item.ci }}</td>
@@ -155,6 +157,7 @@ export default {
         materias: []
       },
       materias: [],
+      loading: false,
       editedIndex: -1,
       formTitle: "ACTUALIZAR DATOS DEL PROFESOR"
     };
@@ -187,9 +190,10 @@ export default {
     },
 
     obtener_profesores() {
+      this.loading = false;
       this.get_teachers()
         .then(response => {
-          console.log(response);
+          this.loading = response.enter;
         })
         .catch(e => {
           console.log(e);

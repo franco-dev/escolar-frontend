@@ -57,7 +57,7 @@ const auth = {
             local.set("user", response.data.content.data.admin);
             local.set("token", response.data.content.token);
             local.set("materias", response.data.content.data.materias);
-            console.log("token de Login: " + response.data.content.token);
+            //console.log("token de Login: " + response.data.content.token);
             store.commit("setMaterias", response.data.content.data.materias);
             local.set('logged', 'admin');
             /*  if (creds.remember) local.set('login-user', creds);
@@ -91,6 +91,7 @@ const auth = {
             enter: false
           };
           if (code == 200) {
+           // console.log(response.data);
             local.set("user", response.data.content.data.profesor);
             local.set("token", response.data.content.token);
             local.set("actual", response.data.content.data.curso_actual);
@@ -135,7 +136,7 @@ const cursos = {
           // console.log("Token enviado: ", local.get('token'));
           let code = response.data.code;
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
             //console.log(response.data.content.token);
             //console.log('Cambiooooo');
@@ -192,9 +193,9 @@ const add = {
           };
           let code = response.data.code;
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
-            console.log(response.data.content.token);
+            //console.log(response.data.content.token);
           }
           resp.msg = response.data.usrmsg;
           resolve(resp);
@@ -226,7 +227,7 @@ const add = {
           let code = response.data.code;
           console.log(response);
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
             //console.log(response.data.content.token);
             resp.username = response.data.content.data;

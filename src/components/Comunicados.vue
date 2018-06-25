@@ -94,6 +94,6 @@ export default {
 <style scoped>
 .scroll-box {
   overflow-y: scroll;
-  height: 450px;
+  max-height: 450px;
 }  
 </style>

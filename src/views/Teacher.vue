@@ -3,10 +3,10 @@
         <v-container grid-list-lg>
             <v-layout row wrap>
                 
-                <v-flex xs9>
+                <v-flex xs12 md9 order-xs2 order-lg1>
                     <h2>Inicio</h2>
                 </v-flex>
-                <v-flex xs3 color="red">
+                <v-flex  xs12 md3 order-xs1 order-lg2>
                     <comunicados></comunicados>
                 </v-flex>
             </v-layout>
@@ -31,7 +31,7 @@ export default {
     resource.comunicados
       .getReleases()
       .then(response => {
-        console.log(response);
+        //console.log(response);
         this.comunicados = response;
       })
       .catch(e => {
