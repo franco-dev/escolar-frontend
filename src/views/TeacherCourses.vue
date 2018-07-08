@@ -1,6 +1,7 @@
 <template>
 <v-jumbotron height="100%" class="courses-content" color="white">
-        <v-container fluid grid-list-lg>
+  <loading :loading="loading"></loading>
+        <v-container fluid grid-list-lg-2>
           <v-layout row wrap>
             <v-layout v-if="courses" wrap row>
               <v-layout v-if="courses.length > 0" wrap class="mr-0 ml-2">
@@ -96,7 +97,7 @@
                 </v-flex>
               </v-layout>
               <v-flex v-else xs12>
-                <h2>El docente no dicta aún ninguna materia.</h2>
+                <h2>Aún no se le ha asignado ningún curso y/o materia.</h2>
                 <h3>Por favor contatece con el administrador para la respectiva asignación de materias y paralelos.</h3>
               </v-flex>
             </v-layout>
@@ -161,10 +162,14 @@
 
 <script>
 import resource from "@/util/api-resource";
+import Loading from '@/components/Loading';
 import { mapState } from "vuex";
 export default {
   $_veeValidate: {
     validator: "new"
+  },
+  components: {
+    Loading,
   },
 
   data() {
@@ -238,18 +243,22 @@ export default {
         })
         .catch(e => {
           console.log(e);
+          this.loading = false;
         });
     },
 
     actualizarCurso(id) {
+      this.loading = true;
       this.drawer = false;
       resource.trabajos
         .get_course(id)
         .then(response => {
           this.course = resource.local.get("actual");
+          this.loading = false;
         })
         .catch(e => {
           console.log(e);
+          this.loading = false;
         });
     }
   },

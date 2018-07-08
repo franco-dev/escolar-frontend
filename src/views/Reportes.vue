@@ -78,7 +78,7 @@
                         </v-btn>
                         </v-flex>
                    
-                    <v-flex xs12>
+                    <!-- <v-flex xs12>
                         <v-layout class="mt-2">
                             <v-flex xs3>
                                 <v-checkbox color="primary" v-model="bimestre" :disabled="!cursoid || loading || !gestion" label="Primer" value="1"></v-checkbox>
@@ -105,7 +105,7 @@
                             <v-icon left dark>assignment_returned</v-icon>
                             BOLETIN SEMESTRAL
                         </v-btn>
-                    </v-flex>
+                    </v-flex> -->
                     <v-flex xs12>
                         <v-btn :loading="loading"
                         @click.native=""

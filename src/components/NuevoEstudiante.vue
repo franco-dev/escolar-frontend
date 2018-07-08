@@ -34,7 +34,7 @@
                         v-model="form.appat"
                         label="Apellido Paterno"
                         :error-messages="errors.collect('appat')"
-                        v-validate="'required|min:2'"
+                        v-validate="'min:2'"
                         data-vv-name="appat"
                         >
                       </v-text-field>
@@ -44,7 +44,7 @@
                         v-model="form.apmat"
                         label="Apellidos Materno"
                         :error-messages="errors.collect('apmat')"
-                        v-validate="'required|min:2'"
+                        v-validate="'min:2'"
                         data-vv-name="apmat"
                         >
                       </v-text-field>
@@ -64,7 +64,7 @@
                         v-model.number="form.cel"
                         label="Telefono o Celular"
                         :error-messages="errors.collect('cel')"
-                        v-validate="'required|digits:8'"
+                        v-validate="'required|min:6|numeric'"
                         data-vv-name="cel"
                         >
                       </v-text-field>
@@ -172,8 +172,8 @@ export default {
         curso: null,
         cursoid: null,
         nombres: null,
-        appat: null,
-        apmat: null,
+        appat: '',
+        apmat: '',
         ci: null,
         dir: null,
         cel: null,
