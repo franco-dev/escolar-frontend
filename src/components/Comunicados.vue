@@ -6,7 +6,7 @@
               <v-card-title primary-title class="pb-0">
                 <v-layout row wrap>
                   <v-flex xs12 class="title pt-0 pb-0">
-                    <b> {{ comunicado.titulo | upper }} </b>
+                    <b class="indigo--text text--lighten-3"> {{ comunicado.titulo | upper }} </b>
                   </v-flex>
                   <v-flex xs12 class="subheading pt-0 pb-0">
                     {{ comunicado.cont }}
@@ -15,7 +15,7 @@
                     <b>Fecha de Publicación:</b>
                   </v-flex>
                   <v-flex xs12 class="mt-0 pt-0 mb-2">
-                     <v-layout wrap class="mt-1 mr-1 ml-1">
+                     <v-layout wrap class="mt-1 mr-1 ml-1 red--text text--lighten-1">
                         {{ comunicado.hora }}
                         <v-spacer></v-spacer>
                         {{ comunicado.fecha}}
@@ -36,8 +36,8 @@
           <!-- <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text> -->
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="error" outline @click.native="dialog = false; id_comunicado = null">cancelar</v-btn>
-            <v-btn color="indigo" dark outline @click.native="borrarComunicado()">aceptar</v-btn>
+            <v-btn color="error" dark @click.native="dialog = false; id_comunicado = null">No</v-btn>
+            <v-btn color="primary" dark @click.native="borrarComunicado()">Si</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -56,16 +56,16 @@ export default {
     return {
       dialog: false,
       id_comunicado: null,
-      login: null,
+      login: null
     };
   },
 
   mounted() {
-      this.login = resource.local.get("logged");
+    this.login = resource.local.get("logged");
   },
   methods: {
     borrarComunicado() {
-       resource.comunicados
+      resource.comunicados
         .deleteRelease(this.id_comunicado)
         .then(response => {
           this.obtenerComunicados();
@@ -74,26 +74,23 @@ export default {
           console.log(e);
         });
 
-        this.dialog = false;
+      this.dialog = false;
     },
-
-    obtenerComunicados() {
-      resource.comunicados
-        .getReleases()
-        .then(response => {
-          console.log(response);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
-  },
+  }
 };
 </script>
 
 <style scoped>
-.scroll-box {
+/* .scroll-box {
   overflow-y: scroll;
-  height: 450px;
-}  
+  max-height: 450px;
+}
+ */
+.scroll-box {
+  overflow: hidden;
+  max-height: 450px;
+}
+.scroll-box:hover {
+  overflow: auto;
+}
 </style>

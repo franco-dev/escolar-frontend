@@ -116,17 +116,14 @@
                <v-form @submit.prevent="submit" ref="form">
                   <v-card-text>
                     <v-text-field prepend-icon="person" name="login" label="Nombre se usuario" type="text"
-                      :append-icon="form.ci ? 'clear' : 'create'"
-                    :append-icon-cb="form.ci ? ()=>resetForm() : ()=>''"
-                    :rules="[formState.rules.required]" 
+                      clearable
                     v-model="form.ci"></v-text-field>
                     <v-text-field 
                     prepend-icon="lock" name="password" label="Password"
                     id="password"
                     hint="Al menos 8 carácteres"
-                    :append-icon="formState.ocultar ? 'visibility' : 'visibility_off'"
-                    :append-icon-cb="() => (formState.ocultar = !formState.ocultar)"
-                    :rules="[formState.rules.required]" 
+                    :append-icon="formState.ocultar ? 'visibility_off' : 'visibility'"  
+                    @click:append="formState.ocultar = !formState.ocultar"
                     v-model="form.password"
                     :type="formState.ocultar ? 'password' : 'text'"></v-text-field>
                   </v-card-text>

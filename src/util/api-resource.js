@@ -57,7 +57,7 @@ const auth = {
             local.set("user", response.data.content.data.admin);
             local.set("token", response.data.content.token);
             local.set("materias", response.data.content.data.materias);
-            console.log("token de Login: " + response.data.content.token);
+            //console.log("token de Login: " + response.data.content.token);
             store.commit("setMaterias", response.data.content.data.materias);
             local.set('logged', 'admin');
             /*  if (creds.remember) local.set('login-user', creds);
@@ -112,6 +112,42 @@ const auth = {
     });
   },
 
+  editarPerfil(creds, actual) {
+    let url = API_URL;
+    if (actual === "admin") {
+      url += 'admin/perfil';
+    } else {
+      url += 'prof/perfil';
+    }
+    return new Promise((resolve, reject) => {
+      //console.log(local.get('user').token);
+      axios({
+        method: "put",
+        url: url,
+        data: creds,
+        headers: {
+          Authorization: local.get("token")
+        }
+      })
+        .then(response => {
+          let resp = {
+            msg: null,
+            enter: false,
+          };
+          let code = response.data.code;
+          if (code == 200) {
+            local.set("token", response.data.content.token);
+            resp.enter = true;
+          }
+          resp.msg = response.data.usrmsg;
+          resolve(resp);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  },
+
   logout() {
     localStorage.clear();
     router.push("/login");
@@ -135,7 +171,7 @@ const cursos = {
           // console.log("Token enviado: ", local.get('token'));
           let code = response.data.code;
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
             //console.log(response.data.content.token);
             //console.log('Cambiooooo');
@@ -192,9 +228,9 @@ const add = {
           };
           let code = response.data.code;
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
-            console.log(response.data.content.token);
+            //console.log(response.data.content.token);
           }
           resp.msg = response.data.usrmsg;
           resolve(resp);
@@ -226,7 +262,7 @@ const add = {
           let code = response.data.code;
           console.log(response);
           if (code == 200) {
-            console.log(local.get("token"));
+            //console.log(local.get("token"));
             local.set("token", response.data.content.token);
             //console.log(response.data.content.token);
             resp.username = response.data.content.data;
@@ -451,11 +487,13 @@ const trabajos = {
         .then(response => {
           //console.log(response);
           let resp = {
-            msg: null
+            msg: null,
+            enter: false
           };
           let code = response.data.code;
           if (code == 200) {
             local.set("token", response.data.content.token);
+            resp.code = true;
           }
           resp.msg = response.data.usrmsg;
           resolve(resp);
@@ -532,11 +570,20 @@ const comunicados = {
           url: COMUNICADOS_URL,
         })
         .then(response => {
+          let resp = {
+            msg: null,
+            enter: false,
+            data: null,
+          };
           let code = response.data.code;
-          resolve(response.data);
+          
           if (code == 200) {
             store.commit("setComunicados", response.data.content);
+            resp.enter = true;
           }
+          resp.data = response.data;
+          resp.msg = response.data.usrmsg;
+          resolve(resp);
         })
         .catch(e => {
           reject(e);

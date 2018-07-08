@@ -15,12 +15,13 @@
                 data-vv-name="campo"></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field
+                  <v-textarea
                     name="contenido"
+                    box
                     label="Contenido"
+                    auto-grow
                     v-model="form.cont"
-                    textarea
-                ></v-text-field>
+                  ></v-textarea>
               </v-flex>
             </v-layout>
           </v-container>

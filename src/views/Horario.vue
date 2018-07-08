@@ -1,6 +1,7 @@
 <template>
   <v-container fluid>
     <v-container grid-list-lg>
+    <loading :loading="loading"></loading>
     <v-layout row wrap>
       <v-flex xs12>
         <v-layout row wrap justify-center>
@@ -42,9 +43,9 @@
           </v-flex>
         </v-layout>
       </v-flex>
-      <v-flex xs12>
+      <!-- <v-flex xs12>
         <v-progress-linear v-if="loading" :indeterminate="true"></v-progress-linear>
-      </v-flex>
+      </v-flex> -->
     </v-layout>
     </v-container>
     <v-layout v-if="!loading && !!materias.length"  row>
@@ -195,7 +196,11 @@
 import { mapGetters, mapState } from "vuex";
 import store from "@/store/store";
 import resource from "@/util/api-resource";
+import Loading from '@/components/Loading';
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       drawer: true,

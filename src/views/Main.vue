@@ -1,6 +1,7 @@
 <template>
   <v-jumbotron height="100%" class="main-content" color="white">
     <v-container grid-list-lg>
+      <loading :loading="loading"></loading>
       <v-layout row wrap>
         <v-flex xs12 md9 order-xs2 order-lg1>
           <v-layout row wrap v-if="stats != null">
@@ -35,17 +36,20 @@ import { mapState } from "vuex";
 import NavBar from "@/components/NavBar";
 import Comunicados from "./../components/Comunicados";
 import Estado from "./../components/Estado";
+import Loading from '@/components/Loading';
 
 export default {
   name: "Main",
   components: {
     NavBar,
     Comunicados,
-    Estado
+    Estado,
+    Loading
   },
   data() {
     return {
       stats: null,
+      loading: false,
     };
   },
 
@@ -54,13 +58,16 @@ export default {
   },
 
   mounted() {
+    this.loading = true;
     resource.stats
       .getStats()
       .then(response => {
+        this.loading = false;
         this.stats = response.content.data;
         resource.local.set("gestion", response.content.data.gestion);
       })
       .catch(e => {
+        this.loading = false;
         console.log(e);
       });
   }
@@ -69,6 +76,6 @@ export default {
 
 <style scoped>
 .main-content {
-  min-height: 100%;
+  min-height: 500px;
 }
 </style>

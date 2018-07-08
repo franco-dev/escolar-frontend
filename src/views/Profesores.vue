@@ -1,7 +1,7 @@
 <template>
     <v-container>
      <h2>GESTIONAR PROFESORES</h2>
-     <v-dialog v-model="dialog"  max-width="500px">
+     <v-dialog v-model="dialog" persistent  max-width="500px">
       <!-- <v-btn slot="activator" color="primary" dark class="mb-2">Nuevo Profesor</v-btn> -->
       <v-card>
         <v-card-title>
@@ -26,6 +26,9 @@
                 <v-text-field v-model="editedItem.dir" label="Dirección"></v-text-field>
               </v-flex>
               <v-flex xs12>
+                <v-text-field v-if="visible" v-model="editedItem.password" label="Nueva Contraseña"></v-text-field>
+              </v-flex>
+              <v-flex xs12>
                 <v-select
                   :items="getMaterias"
                   v-model="materias"
@@ -43,9 +46,10 @@
           </v-container>
         </v-card-text>
         <v-card-actions>
+          <v-btn :color="!visible ? 'indigo' : 'error'" flat @click.native="editedItem.password=''; visible=!visible">{{ !visible ? 'CAMBIAR CONTRASEÑA' : 'CONSERVAR CONTRASEÑA' }}</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+          <v-btn color="error" dark @click.native="close">cancelar</v-btn>
+          <v-btn color="primary" dark @click.native="save">guardar</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -64,10 +68,12 @@
         :headers="headers"
         :items="teachers"
         :search="search"
+        :loading="!loading"
         rows-per-page-text="Filas por página: "
         :rows-per-page-items="[5,10,20,{'text':'*','value':-1}]"
         class="elevation-1"
     >
+        <v-progress-linear slot="progress" color="primary" indeterminate></v-progress-linear>
         <template slot="items" slot-scope="props">
             <tr @click.stop="props.expanded = false">
                 <td class="text-xs-right">{{ props.item.ci }}</td>
@@ -75,7 +81,7 @@
                 <td class="text-xs-left">{{ props.item.apmat }}</td>
                 <td class="text-xs-left">{{ props.item.nombres }}</td>
                 <td class="text-xs-left">{{ props.item.dir }}</td>
-                <td class="text-xs-left layout px-0">
+                <td class="text-xs-center layout px-0">
                   <v-tooltip top>
                     <v-btn icon class="mx-0" slot="activator" @click.stop="props.expanded = !props.expanded">
                         <v-icon color="indigo">visibility</v-icon>
@@ -88,18 +94,18 @@
                     </v-btn>
                     <span>Actualizar Datos</span>
                   </v-tooltip>
-                  <v-tooltip top>
+                  <!-- <v-tooltip top>
                     <v-btn icon class="mx-0" slot="activator" @click="deleteItem(props.item)">
                         <v-icon color="pink">delete</v-icon>
                     </v-btn>
                     <span>Dar de Baja</span>
-                  </v-tooltip>
+                  </v-tooltip> -->
                 </td>
             </tr>
         </template>
         <template slot="expand" slot-scope="props">
           <div v-if="props.item.materias.length">
-            <v-chip v-for="(materia, index) in props.item.materias" :key="index" :color="'color'+ (materia.id+1)" text-color="white">
+            <v-chip v-for="(materia) in props.item.materias" :key="materia.id" :color="'color'+ (materia.id+1)" text-color="white">
               <v-avatar>
                 <!-- <v-icon>account_circle</v-icon> -->
                 <i :class="icons[materia.id]"></i>
@@ -118,9 +124,19 @@
       </v-alert>
     </v-data-table>
      </v-card>
-        <!-- <pre>
-            {{ teachers }}
-        </pre>  -->
+        <v-snackbar
+      :timeout="msg.timeout"
+      :top="msg.y === 'top'"
+      :bottom="msg.y === 'bottom'"
+      :right="msg.x === 'right'"
+      :left="msg.x === 'left'"
+      :multi-line="msg.mode === 'multi-line'"
+      :vertical="msg.mode === 'vertical'"
+      v-model="msg.visible"
+    >
+      {{ msg.text }}
+      <v-btn flat color="pink" @click.native="msg.visible = false">Cerrar</v-btn>
+    </v-snackbar>
     </v-container>
 </template>
 
@@ -132,7 +148,16 @@ export default {
   data() {
     return {
       dialog: false,
+      visible: false,
       search: "",
+      msg: {
+        visible: false,
+        y: "bottom",
+        x: "left",
+        mode: "",
+        timeout: 15000,
+        text: ""
+      },
       headers: [
         {
           text: "Identidad",
@@ -152,9 +177,11 @@ export default {
         apmat: "",
         ci: null,
         dir: null,
+        password: "",
         materias: []
       },
       materias: [],
+      loading: false,
       editedIndex: -1,
       formTitle: "ACTUALIZAR DATOS DEL PROFESOR"
     };
@@ -170,6 +197,7 @@ export default {
       this.editedIndex = item.id;
       this.editedItem = Object.assign({}, item);
       this.editedItem.materias = [];
+      this.editedItem.password = "";
       item.materias.forEach(materia => {
         this.materias.push(materia.id);
       });
@@ -183,13 +211,15 @@ export default {
       setTimeout(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.materias = Object.assign([], this.defaultItem);
       }, 300);
     },
 
     obtener_profesores() {
+      this.loading = false;
       this.get_teachers()
         .then(response => {
-          console.log(response);
+          this.loading = response.enter;
         })
         .catch(e => {
           console.log(e);
@@ -202,8 +232,9 @@ export default {
         resource.docentes
           .saveTeacher(this.editedItem, this.editedIndex)
           .then(response => {
-            console.log(response);
             this.obtener_profesores();
+            this.msg.text = response.msg;
+            this.msg.visible = true;
           })
           .catch(e => {
             console.log(e);

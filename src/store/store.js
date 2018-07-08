@@ -60,8 +60,10 @@ export default new Vuex.Store({
         },
         cel: {
           required: () => "El número telefónico no puede estar vacio.",
-          digits: (field, params) =>
-            `El número telefónico debe contener ${params} dígitos númericos.`
+          numeric: () => "El número telefónico debe contener solo números.",
+          min: (field, params) =>
+            `El número telefónico debe contener mínimo ${params} dígitos númericos.`,
+
           // custom messages
         },
         materias: {
